@@ -24,13 +24,11 @@ import java.io.FileOutputStream;
 /**
  * @author hankcs
  */
-public class TestBytesArray extends TestCase
-{
+public class TestBytesArray extends TestCase {
 
     public static final String DATA_OUT_DAT = "data/test/out.dat";
 
-    public void testWriteAndRead() throws Exception
-    {
+    public void testWriteAndRead() throws Exception {
         DataOutputStream out = new DataOutputStream(new FileOutputStream(DATA_OUT_DAT));
         out.writeChar('H');
         out.writeChar('e');
@@ -39,54 +37,48 @@ public class TestBytesArray extends TestCase
         out.writeChar('o');
         out.close();
         ByteArray byteArray = ByteArray.createByteArray(DATA_OUT_DAT);
-        while (byteArray.hasMore())
-        {
+        while (byteArray.hasMore()) {
             System.out.println(byteArray.nextChar());
         }
     }
 
-    public void testWriteBigFile() throws Exception
-    {
+    public void testWriteBigFile() throws Exception {
         DataOutputStream out = new DataOutputStream(new FileOutputStream(DATA_OUT_DAT));
-        for (int i = 0; i < 10000; i++)
-        {
+        for (int i = 0; i < 10000; i++) {
             out.writeInt(i);
         }
         out.close();
     }
 
-    public void testStream() throws Exception
-    {
+    public void testStream() throws Exception {
         ByteArray byteArray = ByteArrayFileStream.createByteArrayFileStream(DATA_OUT_DAT);
-        while (byteArray.hasMore())
-        {
+        while (byteArray.hasMore()) {
             System.out.println(byteArray.nextInt());
         }
     }
 
     /**
      * 无法在-Xms512m -Xmx512m -Xmn256m下运行<br>
-     *     java.lang.OutOfMemoryError: GC overhead limit exceeded
+     * java.lang.OutOfMemoryError: GC overhead limit exceeded
+     *
      * @throws Exception
      */
-    public void testLoadByteArray() throws Exception
-    {
+    public void testLoadByteArray() throws Exception {
         ByteArray byteArray = ByteArray.createByteArray(HanLP.Config.MaxEntModelPath + Predefine.BIN_EXT);
         MaxEntModel.create(byteArray);
     }
 
     /**
      * 能够在-Xms512m -Xmx512m -Xmn256m下运行
+     *
      * @throws Exception
      */
-    public void testLoadByteArrayStream() throws Exception
-    {
+    public void testLoadByteArrayStream() throws Exception {
         ByteArray byteArray = ByteArrayFileStream.createByteArrayFileStream(HanLP.Config.MaxEntModelPath + Predefine.BIN_EXT);
         MaxEntModel.create(byteArray);
     }
 
-    public void testBenchmark() throws Exception
-    {
+    public void testBenchmark() throws Exception {
         long start;
 
         ByteArray byteArray = ByteArray.createByteArray(HanLP.Config.MaxEntModelPath + Predefine.BIN_EXT);

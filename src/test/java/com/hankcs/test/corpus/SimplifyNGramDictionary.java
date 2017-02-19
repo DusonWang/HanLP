@@ -11,29 +11,29 @@
  */
 package com.hankcs.test.corpus;
 
-import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.corpus.dictionary.TFDictionary;
-import com.hankcs.hanlp.corpus.occurrence.TermFrequency;
 import com.hankcs.hanlp.dictionary.CoreDictionary;
 import junit.framework.TestCase;
 
 import java.io.*;
-import java.util.*;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * 有一些类似于 工程@学 1 的条目会干扰 工程学家 的识别，这类@后接短字符的可以过滤掉
+ *
  * @author hankcs
  */
-public class SimplifyNGramDictionary extends TestCase
-{
+public class SimplifyNGramDictionary extends TestCase {
     String path = "data/dictionary/CoreNatureDictionary.ngram.txt";
-    public void testSimplify() throws Exception
-    {
+
+    public void testSimplify() throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
         TreeMap<String, Integer> map = new TreeMap<String, Integer>();
         String line;
-        while ((line = br.readLine()) != null)
-        {
+        while ((line = br.readLine()) != null) {
             String[] param = line.split("\\s");
             map.put(param[0], Integer.valueOf(param[1]));
         }
@@ -89,19 +89,16 @@ public class SimplifyNGramDictionary extends TestCase
         TFDictionary dictionary = new TFDictionary();
         dictionary.load("D:\\JavaProjects\\HanLP\\data\\dictionary\\CoreNatureDictionary.ngram.mini.txt");
         iterator = entrySet.iterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             Map.Entry<String, Integer> current = iterator.next();
-            if (current.getKey().contains("未##人") && dictionary.getFrequency(current.getKey()) < 10)
-            {
+            if (current.getKey().contains("未##人") && dictionary.getFrequency(current.getKey()) < 10) {
                 System.out.println("删除 " + current.getKey());
                 iterator.remove();
             }
         }
         // 输出
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path)));
-        for (Map.Entry<String, Integer> entry : map.entrySet())
-        {
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
             bw.write(entry.getKey());
             bw.write(' ');
             bw.write(String.valueOf(entry.getValue()));
@@ -112,22 +109,20 @@ public class SimplifyNGramDictionary extends TestCase
 
     /**
      * 有些词条不在CoreDictionary里面，那就把它们删掉
+     *
      * @throws Exception
      */
-    public void testLoseWeight() throws Exception
-    {
+    public void testLoseWeight() throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
         TreeMap<String, Integer> map = new TreeMap<String, Integer>();
         String line;
-        while ((line = br.readLine()) != null)
-        {
+        while ((line = br.readLine()) != null) {
             String[] param = line.split(" ");
             map.put(param[0], Integer.valueOf(param[1]));
         }
         br.close();
         Iterator<String> iterator = map.keySet().iterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             line = iterator.next();
             String[] params = line.split("@", 2);
             String one = params[0];
@@ -138,8 +133,7 @@ public class SimplifyNGramDictionary extends TestCase
 
         // 输出
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "UTF-8"));
-        for (Map.Entry<String, Integer> entry : map.entrySet())
-        {
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
             bw.write(entry.getKey());
             bw.write(' ');
             bw.write(String.valueOf(entry.getValue()));

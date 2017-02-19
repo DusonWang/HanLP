@@ -27,10 +27,8 @@ import java.util.List;
  *
  * @author hankcs
  */
-public class DemoCustomNature
-{
-    public static void main(String[] args)
-    {
+public class DemoCustomNature {
+    public static void main(String[] args) {
         // 对于系统中已有的词性,可以直接获取
         Nature pcNature = Nature.fromString("n");
         System.out.println(pcNature);
@@ -47,8 +45,7 @@ public class DemoCustomNature
         // 它们将在分词结果中生效
         List<Term> termList = HanLP.segment("苹果电脑可以运行开源阿尔法狗代码吗");
         System.out.println(termList);
-        for (Term term : termList)
-        {
+        for (Term term : termList) {
             if (term.nature == pcNature)
                 System.out.printf("找到了 [%s] : %s\n", pcNature, term.word);
         }
@@ -59,10 +56,8 @@ public class DemoCustomNature
         System.out.println(termList);
         // 如果使用了动态词性之后任何类使用了switch(nature)语句,必须注册每个类:
         CustomNatureUtility.registerSwitchClass(DemoCustomNature.class);
-        for (Term term : termList)
-        {
-            switch (term.nature)
-            {
+        for (Term term : termList) {
+            switch (term.nature) {
                 case n:
                     System.out.printf("找到了 [%s] : %s\n", "名词", term.word);
             }

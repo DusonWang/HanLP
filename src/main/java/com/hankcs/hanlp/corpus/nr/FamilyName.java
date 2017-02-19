@@ -20,36 +20,45 @@ import java.util.List;
 /**
  * @author hankcs
  */
-public class FamilyName
-{
-    static boolean fn[];
-    static
-    {
+public class FamilyName {
+    private static boolean fn[];
+
+    static {
         fn = new boolean[65535];
-        try
-        {
+        try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("data/dictionary/person/familyname.txt")));
             String line;
-            while ((line = br.readLine()) != null)
-            {
+            while ((line = br.readLine()) != null) {
                 fn[line.charAt(0)] = true;
             }
             br.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static boolean contains(char c)
-    {
+    public static boolean contains(char c) {
         return fn[c];
     }
 
-    public static boolean contains(String c)
-    {
-        if (c.length() != 1) return false;
-        return fn[c.charAt(0)];
+    public static boolean contains(String c) {
+        return c.length() == 1 && fn[c.charAt(0)];
+    }
+
+    public static void main(String[] args) {
+        List<Item> itemList = DictionaryMaker.loadAsItemList("data/dictionary/person/nr.txt");
+        try {
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("data/dictionary/person/familyname.txt")));
+            assert itemList != null;
+            for (Item item : itemList) {
+                if (item.labelMap.containsKey("B")) {
+                    bw.write(item.key);
+                    bw.newLine();
+                }
+            }
+            bw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

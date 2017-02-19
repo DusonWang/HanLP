@@ -24,10 +24,8 @@ import java.util.List;
  *
  * @author hankcs
  */
-public class DemoHMMSegment
-{
-    public static void main(String[] args)
-    {
+public class DemoHMMSegment {
+    public static void main(String[] args) {
         HanLP.Config.ShowTermNature = false;    // 关闭词性显示
         Segment segment = new HMMSegment();
         String[] sentenceArray = new String[]
@@ -44,8 +42,7 @@ public class DemoHMMSegment
                         "你看过穆赫兰道吗",
                         "乐视超级手机能否承载贾布斯的生态梦"
                 };
-        for (String sentence : sentenceArray)
-        {
+        for (String sentence : sentenceArray) {
             List<Term> termList = segment.seg(sentence);
             System.out.println(termList);
         }
@@ -55,11 +52,10 @@ public class DemoHMMSegment
         System.out.println(segment.seg(text));
         long start = System.currentTimeMillis();
         int pressure = 1000;
-        for (int i = 0; i < pressure; ++i)
-        {
+        for (int i = 0; i < pressure; ++i) {
             segment.seg(text);
         }
-        double costTime = (System.currentTimeMillis() - start) / (double)1000;
+        double costTime = (System.currentTimeMillis() - start) / (double) 1000;
         System.out.printf("HMM2分词速度：%.2f字每秒\n", text.length() * pressure / costTime);
     }
 }

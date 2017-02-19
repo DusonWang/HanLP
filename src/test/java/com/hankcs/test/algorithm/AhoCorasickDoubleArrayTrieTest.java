@@ -5,15 +5,12 @@ import com.hankcs.hanlp.algoritm.ahocorasick.trie.Trie;
 import com.hankcs.hanlp.collection.AhoCorasick.AhoCorasickDoubleArrayTrie;
 import com.hankcs.hanlp.collection.trie.DoubleArrayTrie;
 import com.hankcs.hanlp.corpus.io.IOUtil;
-import com.hankcs.hanlp.dictionary.CoreDictionary;
 import junit.framework.TestCase;
 
 import java.util.*;
 
-public class AhoCorasickDoubleArrayTrieTest extends TestCase
-{
-    public void testAC() throws Exception
-    {
+public class AhoCorasickDoubleArrayTrieTest extends TestCase {
+    public void testAC() throws Exception {
         Trie trie = new Trie();
         trie.addKeyword("hers");
         trie.addKeyword("his");
@@ -23,8 +20,7 @@ public class AhoCorasickDoubleArrayTrieTest extends TestCase
         System.out.println(emits);
     }
 
-    public void testBuild() throws Exception
-    {
+    public void testBuild() throws Exception {
         TreeMap<String, String> map = new TreeMap<String, String>();
         String[] keyArray = new String[]
                 {
@@ -33,43 +29,36 @@ public class AhoCorasickDoubleArrayTrieTest extends TestCase
                         "she",
                         "he"
                 };
-        for (String key : keyArray)
-        {
+        for (String key : keyArray) {
             map.put(key, key);
         }
         AhoCorasickDoubleArrayTrie<String> act = new AhoCorasickDoubleArrayTrie<String>();
         act.build(map);
 //        act.debug();
-        act.parseText("uhers", new AhoCorasickDoubleArrayTrie.IHit<String>()
-        {
+        act.parseText("uhers", new AhoCorasickDoubleArrayTrie.IHit<String>() {
             @Override
-            public void hit(int begin, int end, String value)
-            {
+            public void hit(int begin, int end, String value) {
                 System.out.printf("[%d:%d]=%s\n", begin, end, value);
             }
         });
         // 或者System.out.println(act.parseText("uhers"));
     }
 
-    public void testDatFromFile() throws Exception
-    {
+    public void testDatFromFile() throws Exception {
         TreeMap<String, String> map = new TreeMap<String, String>();
         IOUtil.LineIterator iterator = new IOUtil.LineIterator("data/dictionary/CoreNatureDictionary.mini.txt");
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             String line = iterator.next();
             map.put(line, line);
         }
         DoubleArrayTrie<String> trie = new DoubleArrayTrie<String>();
         trie.build(map);
-        for (String key : map.keySet())
-        {
+        for (String key : map.keySet()) {
             assertEquals(key, trie.get(key));
         }
     }
 
-    public void testDat() throws Exception
-    {
+    public void testDat() throws Exception {
         TreeMap<String, String> map = new TreeMap<String, String>();
         String[] keyArray = new String[]
                 {
@@ -78,8 +67,7 @@ public class AhoCorasickDoubleArrayTrieTest extends TestCase
                         "she",
                         "he"
                 };
-        for (String key : keyArray)
-        {
+        for (String key : keyArray) {
             map.put(key, key);
         }
         DoubleArrayTrie<String> trie = new DoubleArrayTrie<String>();
@@ -87,8 +75,7 @@ public class AhoCorasickDoubleArrayTrieTest extends TestCase
         System.out.println(trie.exactMatchSearch("he"));
     }
 
-    public void testTwoStruct() throws Exception
-    {
+    public void testTwoStruct() throws Exception {
 //        TreeMap<String, String> map = new TreeMap<>();
 //        IOUtil.LineIterator iterator = new IOUtil.LineIterator("data/dictionary/CoreNatureDictionary.txt");
 //        while (iterator.hasNext())
@@ -108,12 +95,10 @@ public class AhoCorasickDoubleArrayTrieTest extends TestCase
 //        System.out.println(act.exactMatchSearch("只是人"));
     }
 
-    public void testTwoAC() throws Exception
-    {
+    public void testTwoAC() throws Exception {
         TreeMap<String, String> map = new TreeMap<String, String>();
         IOUtil.LineIterator iterator = new IOUtil.LineIterator("data/dictionary/CoreNatureDictionary.mini.txt");
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             String line = iterator.next().split("\\s")[0];
             map.put(line, line);
         }
@@ -123,19 +108,16 @@ public class AhoCorasickDoubleArrayTrieTest extends TestCase
         AhoCorasickDoubleArrayTrie<String> act = new AhoCorasickDoubleArrayTrie<String>();
         act.build(map);
 
-        for (String key : map.keySet())
-        {
+        for (String key : map.keySet()) {
             Collection<Emit> emits = trie.parseText(key);
             Set<String> otherSet = new HashSet<String>();
-            for (Emit emit : emits)
-            {
+            for (Emit emit : emits) {
                 otherSet.add(emit.getKeyword() + emit.getEnd());
             }
 
             List<AhoCorasickDoubleArrayTrie<String>.Hit<String>> entries = act.parseText(key);
             Set<String> mySet = new HashSet<String>();
-            for (AhoCorasickDoubleArrayTrie<String>.Hit<String> entry : entries)
-            {
+            for (AhoCorasickDoubleArrayTrie<String>.Hit<String> entry : entries) {
                 mySet.add(entry.value + (entry.end - 1));
             }
 
@@ -145,14 +127,13 @@ public class AhoCorasickDoubleArrayTrieTest extends TestCase
 
     /**
      * 测试构建和匹配，使用《我的团长我的团》.txt作为测试数据，并且判断匹配是否正确
+     *
      * @throws Exception
      */
-    public void testSegment() throws Exception
-    {
+    public void testSegment() throws Exception {
         TreeMap<String, String> map = new TreeMap<String, String>();
         IOUtil.LineIterator iterator = new IOUtil.LineIterator("data/dictionary/CoreNatureDictionary.txt");
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             String line = iterator.next().split("\\s")[0];
             map.put(line, line);
         }
@@ -166,12 +147,10 @@ public class AhoCorasickDoubleArrayTrieTest extends TestCase
 
         LinkedList<String> lineList = IOUtil.readLineList("D:\\Doc\\语料库\\《我的团长我的团》.txt");
         timeMillis = System.currentTimeMillis();
-        for (String sentence : lineList)
-        {
+        for (String sentence : lineList) {
 //            System.out.println(sentence);
             List<AhoCorasickDoubleArrayTrie<String>.Hit<String>> entryList = act.parseText(sentence);
-            for (AhoCorasickDoubleArrayTrie<String>.Hit<String> entry : entryList)
-            {
+            for (AhoCorasickDoubleArrayTrie<String>.Hit<String> entry : entryList) {
                 int end = entry.end;
                 int start = entry.begin;
 //                System.out.printf("[%d:%d]=%s\n", start, end, entry.value);

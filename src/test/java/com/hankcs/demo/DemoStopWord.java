@@ -24,10 +24,8 @@ import java.util.List;
  *
  * @author hankcs
  */
-public class DemoStopWord
-{
-    public static void main(String[] args)
-    {
+public class DemoStopWord {
+    public static void main(String[] args) {
         String text = "小区居民有的反对喂养流浪猫，而有的居民却赞成喂养这些小宝贝";
         // 可以动态修改停用词词典
         CoreStopWordDictionary.add("居民");
@@ -40,15 +38,12 @@ public class DemoStopWord
         CoreStopWordDictionary.apply(termList);
         System.out.println(termList);
         // 还可以自定义过滤逻辑
-        CoreStopWordDictionary.FILTER = new Filter()
-        {
+        CoreStopWordDictionary.FILTER = new Filter() {
             @Override
-            public boolean shouldInclude(Term term)
-            {
-                switch (term.nature)
-                {
+            public boolean shouldInclude(Term term) {
+                switch (term.nature) {
                     case nz:
-                    return !CoreStopWordDictionary.contains(term.word);
+                        return !CoreStopWordDictionary.contains(term.word);
                 }
                 return false;
             }

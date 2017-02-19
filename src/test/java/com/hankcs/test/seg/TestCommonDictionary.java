@@ -16,10 +16,8 @@ import junit.framework.TestCase;
 /**
  * @author hankcs
  */
-public class TestCommonDictionary extends TestCase
-{
-    public void testLoad() throws Exception
-    {
+public class TestCommonDictionary extends TestCase {
+    public void testLoad() throws Exception {
 //        CommonDictionary<SimpleItem> dictionary = new CommonDictionary<SimpleItem>()
 //        {
 //            @Override
@@ -38,8 +36,7 @@ public class TestCommonDictionary extends TestCase
 //        }
     }
 
-    public void testLoadE() throws Exception
-    {
+    public void testLoadE() throws Exception {
 //        CommonDictionary<EnumItem<NR>> dictionary = new CommonDictionary<EnumItem<NR>>()
 //        {
 //            @Override

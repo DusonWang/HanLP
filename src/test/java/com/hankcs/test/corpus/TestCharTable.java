@@ -12,7 +12,6 @@
 package com.hankcs.test.corpus;
 
 import com.hankcs.hanlp.HanLP;
-import com.hankcs.hanlp.corpus.dictionary.StringDictionary;
 import com.hankcs.hanlp.corpus.io.IOUtil;
 import com.hankcs.hanlp.dictionary.other.CharTable;
 import junit.framework.TestCase;
@@ -20,31 +19,26 @@ import junit.framework.TestCase;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-import java.util.Map;
 
 /**
  * @author hankcs
  */
-public class TestCharTable extends TestCase
-{
-    public void testConvert() throws Exception
-    {
+public class TestCharTable extends TestCase {
+    public void testConvert() throws Exception {
         System.out.println(CharTable.CONVERT['關']);
         System.out.println(CharTable.CONVERT['Ａ']);
         System.out.println(CharTable.CONVERT['“']);
         System.out.println(CharTable.CONVERT['．']);
     }
 
-    public void testEnd() throws Exception
-    {
+    public void testEnd() throws Exception {
         System.out.println(CharTable.CONVERT['，']);
         System.out.println(CharTable.CONVERT['。']);
         System.out.println(CharTable.CONVERT['！']);
         System.out.println(CharTable.CONVERT['…']);
     }
 
-    public void testFix() throws Exception
-    {
+    public void testFix() throws Exception {
         char[] CONVERT = CharTable.CONVERT;
         CONVERT['.'] = '.';
         CONVERT['．'] = '.';
@@ -105,10 +99,8 @@ public class TestCharTable extends TestCase
         CONVERT['眾'] = '众';
         CONVERT['龕'] = '龛';
         CONVERT['製'] = '制';
-        for (int i = 0; i < CONVERT.length; i++)
-        {
-            if (CONVERT[i] == '\u0000')
-            {
+        for (int i = 0; i < CONVERT.length; i++) {
+            if (CONVERT[i] == '\u0000') {
                 if (i != '\u0000') CONVERT[i] = (char) i;
                 else CONVERT[i] = ' ';
             }
@@ -118,8 +110,7 @@ public class TestCharTable extends TestCase
         out.close();
     }
 
-    public void testImportSingleCharFromTraditionalChineseDictionary() throws Exception
-    {
+    public void testImportSingleCharFromTraditionalChineseDictionary() throws Exception {
 //        char[] CONVERT = CharTable.CONVERT;
 //        StringDictionary dictionary = new StringDictionary("=");
 //        dictionary.load(HanLP.Config.t2sDictionaryPath);
@@ -142,22 +133,18 @@ public class TestCharTable extends TestCase
 //        out.close();
     }
 
-    public void testDumpCharTable() throws Exception
-    {
+    public void testDumpCharTable() throws Exception {
         BufferedWriter bw = IOUtil.newBufferedWriter(HanLP.Config.CharTablePath.replace(".bin.yes", ".txt"));
         char[] CONVERT = CharTable.CONVERT;
-        for (int i = 0; i < CONVERT.length; i++)
-        {
-            if (i != CONVERT[i])
-            {
+        for (int i = 0; i < CONVERT.length; i++) {
+            if (i != CONVERT[i]) {
                 bw.write(String.format("%c=%c\n", i, CONVERT[i]));
             }
         }
         bw.close();
     }
 
-    public void testLoadCharTableFromTxt() throws Exception
-    {
+    public void testLoadCharTableFromTxt() throws Exception {
 //        CharTable.load(HanLP.Config.CharTablePath.replace(".bin.yes", ".txt"));
     }
 }

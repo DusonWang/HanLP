@@ -23,38 +23,29 @@ import static com.hankcs.hanlp.utility.Predefine.logger;
 /**
  * @author hankcs
  */
-public class ByteArrayOtherStream extends ByteArrayStream
-{
+public class ByteArrayOtherStream extends ByteArrayStream {
     InputStream is;
 
-    public ByteArrayOtherStream(byte[] bytes, int bufferSize)
-    {
+    public ByteArrayOtherStream(byte[] bytes, int bufferSize) {
         super(bytes, bufferSize);
     }
 
-    public ByteArrayOtherStream(byte[] bytes, int bufferSize, InputStream is)
-    {
+    private ByteArrayOtherStream(byte[] bytes, int bufferSize, InputStream is) {
         super(bytes, bufferSize);
         this.is = is;
     }
 
-    public static ByteArrayOtherStream createByteArrayOtherStream(String path)
-    {
-        try
-        {
+    public static ByteArrayOtherStream createByteArrayOtherStream(String path) {
+        try {
             InputStream is = IOAdapter == null ? new FileInputStream(path) : IOAdapter.open(path);
             return createByteArrayOtherStream(is);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.warning(TextUtility.exceptionToString(e));
             return null;
         }
     }
 
-    public static ByteArrayOtherStream createByteArrayOtherStream(InputStream is) throws IOException
-    {
-        if (is == null) return null;
+    static ByteArrayOtherStream createByteArrayOtherStream(InputStream is) throws IOException {
         int size = is.available();
         int bufferSize = Math.min(1048576, size);
         byte[] bytes = new byte[bufferSize];
@@ -63,18 +54,14 @@ public class ByteArrayOtherStream extends ByteArrayStream
     }
 
     @Override
-    protected void ensureAvailableBytes(int size)
-    {
-        if (offset + size > bufferSize)
-        {
-            try
-            {
+    protected void ensureAvailableBytes(int size) {
+        if (offset + size > bufferSize) {
+            try {
                 int availableBytes = is.available();
                 int readBytes = Math.min(availableBytes, offset);
                 byte[] bytes = new byte[readBytes];
                 IOUtil.readBytesFromOtherInputStream(is, bytes);
-                if (readBytes == availableBytes)
-                {
+                if (readBytes == availableBytes) {
                     is.close();
                     is = null;
                 }
@@ -82,24 +69,18 @@ public class ByteArrayOtherStream extends ByteArrayStream
                 System.arraycopy(this.bytes, offset, this.bytes, offset - readBytes, bufferSize - offset);
                 System.arraycopy(bytes, 0, this.bytes, bufferSize - readBytes, readBytes);
                 offset -= readBytes;
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
     @Override
-    public void close()
-    {
+    public void close() {
         super.close();
-        try
-        {
+        try {
             is.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             logger.warning(TextUtility.exceptionToString(e));
         }
     }

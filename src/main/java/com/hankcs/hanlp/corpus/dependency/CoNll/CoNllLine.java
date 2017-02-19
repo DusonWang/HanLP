@@ -13,10 +13,10 @@ package com.hankcs.hanlp.corpus.dependency.CoNll;
 
 /**
  * CoNLL语料中的一行
+ *
  * @author hankcs
  */
-public class CoNllLine
-{
+public class CoNllLine {
     /**
      * 十个值
      */
@@ -27,22 +27,16 @@ public class CoNllLine
      */
     public int id;
 
-    public CoNllLine(String... args)
-    {
+    CoNllLine(String... args) {
         int length = Math.min(args.length, value.length);
-        for (int i = 0; i < length; ++i)
-        {
-            value[i] = args[i];
-        }
+        System.arraycopy(args, 0, value, 0, length);
         id = Integer.parseInt(value[0]);
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         final StringBuilder sb = new StringBuilder();
-        for (String value : this.value)
-        {
+        for (String value : this.value) {
             sb.append(value);
             sb.append('\t');
         }

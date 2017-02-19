@@ -24,21 +24,19 @@ import java.util.List;
  *
  * @author hankcs
  */
-public class SegmentWrapper
-{
-    BufferedReader br;
-    Segment segment;
+public class SegmentWrapper {
+    private BufferedReader br;
+    private Segment segment;
     /**
      * 因为next是单个term出去的，所以在这里做一个记录
      */
-    Term[] termArray;
+    private Term[] termArray;
     /**
      * termArray下标
      */
-    int index;
+    private int index;
 
-    public SegmentWrapper(BufferedReader br, Segment segment)
-    {
+    public SegmentWrapper(BufferedReader br, Segment segment) {
         this.br = br;
         this.segment = segment;
     }
@@ -48,19 +46,16 @@ public class SegmentWrapper
      *
      * @param br
      */
-    public void reset(BufferedReader br)
-    {
+    public void reset(BufferedReader br) {
         this.br = br;
         termArray = null;
         index = 0;
     }
 
-    public Term next() throws IOException
-    {
+    public Term next() throws IOException {
         if (termArray != null && index < termArray.length) return termArray[index++];
         String line = br.readLine();
-        while (TextUtility.isBlank(line))
-        {
+        while (TextUtility.isBlank(line)) {
             if (line == null) return null;
             line = br.readLine();
         }

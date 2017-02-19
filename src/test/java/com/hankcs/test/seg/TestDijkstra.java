@@ -21,25 +21,21 @@ import java.util.List;
 /**
  * @author hankcs
  */
-public class TestDijkstra extends TestCase
-{
-    public void testSeg() throws Exception
-    {
+public class TestDijkstra extends TestCase {
+    public void testSeg() throws Exception {
         String text = "商品与服务";
         DijkstraSegment segment = new DijkstraSegment();
         List<Term> resultList = segment.seg(text);
         System.out.println(resultList);
     }
 
-    public void testNameRecognize() throws Exception
-    {
+    public void testNameRecognize() throws Exception {
         DijkstraSegment segment = new DijkstraSegment();
         HanLP.Config.enableDebug(true);
         System.out.println(segment.seg("妈蛋，你认识波多野结衣老师吗？"));
     }
 
-    public void testFixResult() throws Exception
-    {
+    public void testFixResult() throws Exception {
         DijkstraSegment segment = new DijkstraSegment();
         HanLP.Config.enableDebug(true);
         System.out.println(segment.seg("2014年"));

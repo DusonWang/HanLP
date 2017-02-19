@@ -30,10 +30,8 @@ import java.util.List;
 /**
  * @author hankcs
  */
-public class TestParse extends TestCase
-{
-    public void testParse() throws Exception
-    {
+public class TestParse extends TestCase {
+    public void testParse() throws Exception {
         List<Term> termList = new LinkedList<Term>();
         termList.add(new Term("坚决", Nature.ad));
         termList.add(new Term("惩治", Nature.v));
@@ -46,31 +44,26 @@ public class TestParse extends TestCase
         System.out.println(CRFDependencyParser.compute(termList));
     }
 
-    public void testMaxEntParser() throws Exception
-    {
+    public void testMaxEntParser() throws Exception {
         HanLP.Config.enableDebug();
         System.out.println(MaxEntDependencyParser.compute("我每天骑车上学"));
     }
 
-    public void testCRFParser() throws Exception
-    {
+    public void testCRFParser() throws Exception {
         HanLP.Config.enableDebug();
         System.out.println(CRFDependencyParser.compute("我每天骑车上学"));
     }
 
-    public void testWordNatureParser() throws Exception
-    {
+    public void testWordNatureParser() throws Exception {
         HanLP.Config.enableDebug();
         System.out.println(WordNatureDependencyParser.compute("我每天骑车上学"));
     }
 
-    public void testNNParser() throws Exception
-    {
+    public void testNNParser() throws Exception {
         System.out.println(NeuralNetworkDependencyParser.compute("徐先生还具体帮助他确定了把画雄鹰、松鼠和麻雀作为主攻目标。"));
     }
 
-    public void testNatureMap() throws Exception
-    {
+    public void testNatureMap() throws Exception {
 //        System.out.println('Ｏ' == 'Ｏ');
 //        String text = "二Ｏ一二年四月五日";
 //        List<Term> termList = NeuralNetworkDependencyParser.INSTANCE.getSegment().seg(text);
@@ -78,8 +71,7 @@ public class TestParse extends TestCase
 //        System.out.println(NeuralNetworkDependencyParser.compute(termList));
     }
 
-    public void testCrfParser() throws Exception
-    {
+    public void testCrfParser() throws Exception {
         HanLP.Config.enableDebug();
         List<Term> termList = new LinkedList<Term>();
         termList.add(new Term("坚决", Nature.ad));
@@ -92,19 +84,16 @@ public class TestParse extends TestCase
         System.out.println(CRFDependencyParser.compute(termList));
     }
 
-    public void testEvaluate() throws Exception
-    {
+    public void testEvaluate() throws Exception {
         testParse();
         LinkedList<CoNLLSentence> sentenceList = CoNLLLoader.loadSentenceList("D:\\Doc\\语料库\\依存分析训练数据\\THU\\dev.conll");
         Evaluator evaluator = new Evaluator();
         int id = 1;
-        for (CoNLLSentence sentence : sentenceList)
-        {
+        for (CoNLLSentence sentence : sentenceList) {
             System.out.printf("%d / %d...", id++, sentenceList.size());
             long start = System.currentTimeMillis();
             List<Term> termList = new LinkedList<Term>();
-            for (CoNLLWord word : sentence.word)
-            {
+            for (CoNLLWord word : sentence.word) {
                 termList.add(new Term(word.LEMMA, Nature.valueOf(word.POSTAG)));
             }
             CoNLLSentence out = CRFDependencyParser.compute(termList);

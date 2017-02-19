@@ -17,10 +17,8 @@ import junit.framework.TestCase;
 /**
  * @author hankcs
  */
-public class TestBinTrie extends TestCase
-{
-    public void testPut() throws Exception
-    {
+public class TestBinTrie extends TestCase {
+    public void testPut() throws Exception {
         BinTrie<Boolean> trie = new BinTrie<Boolean>();
         trie.put("加入", true);
         trie.put("加入", false);
@@ -28,8 +26,7 @@ public class TestBinTrie extends TestCase
         assertEquals(new Boolean(false), trie.get("加入"));
     }
 
-    public void testArrayIndexOutOfBoundsException() throws Exception
-    {
+    public void testArrayIndexOutOfBoundsException() throws Exception {
         BinTrie<Boolean> trie = new BinTrie<Boolean>();
         trie.put(new char[]{'\uffff'}, true);
     }

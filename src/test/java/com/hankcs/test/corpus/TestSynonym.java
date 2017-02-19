@@ -12,9 +12,9 @@
 package com.hankcs.test.corpus;
 
 import com.hankcs.hanlp.corpus.synonym.Synonym;
+import com.hankcs.hanlp.dictionary.CoreSynonymDictionary;
 import com.hankcs.hanlp.dictionary.common.CommonSynonymDictionary;
 import com.hankcs.hanlp.dictionary.common.CommonSynonymDictionaryEx;
-import com.hankcs.hanlp.dictionary.CoreSynonymDictionary;
 import junit.framework.TestCase;
 
 import java.io.FileInputStream;
@@ -22,31 +22,27 @@ import java.util.List;
 
 /**
  * 对同义词的测试
+ *
  * @author hankcs
  */
-public class TestSynonym extends TestCase
-{
-    public void testCreate() throws Exception
-    {
+public class TestSynonym extends TestCase {
+    public void testCreate() throws Exception {
         String[] testCaseArray = new String[]
                 {
                         "Bh06A32= 番茄 西红柿",
                         "Ad02B05# 白人 白种人 黑人",
                         "Bo21A05@ 摩托车"
                 };
-        for (String tc : testCaseArray)
-        {
+        for (String tc : testCaseArray) {
             runCase(tc);
         }
     }
 
-    public void testSingle() throws Exception
-    {
+    public void testSingle() throws Exception {
         runCase("Aa01A01= 人 士 人物 人士 人氏 人选");
     }
 
-    public void testDictionary() throws Exception
-    {
+    public void testDictionary() throws Exception {
         String apple = "苹果";
         String banana = "香蕉";
         String bike = "自行车";
@@ -57,14 +53,12 @@ public class TestSynonym extends TestCase
         System.out.println(apple + " " + bike + "之间的距离是" + synonymApple.distance(synonymBike));
     }
 
-    void runCase(String param)
-    {
+    void runCase(String param) {
         List<Synonym> synonymList = Synonym.create(param);
         System.out.println(synonymList);
     }
 
-    public void testDictionaryEx() throws Exception
-    {
+    public void testDictionaryEx() throws Exception {
         CommonSynonymDictionaryEx dictionaryEx = CommonSynonymDictionaryEx.create(new FileInputStream("data/dictionary/synonym/CoreSynonym.txt"));
         String[] array = new String[]
                 {
@@ -97,12 +91,9 @@ public class TestSynonym extends TestCase
         runCase(array, dictionaryEx);
     }
 
-    public void runCase(String[] stringArray, CommonSynonymDictionaryEx dictionaryEx)
-    {
-        for (String a : stringArray)
-        {
-            for (String b : stringArray)
-            {
+    public void runCase(String[] stringArray, CommonSynonymDictionaryEx dictionaryEx) {
+        for (String a : stringArray) {
+            for (String b : stringArray) {
                 System.out.println(a + "\t" + b + "\t之间的距离是\t" + dictionaryEx.distance(a, b));
             }
         }

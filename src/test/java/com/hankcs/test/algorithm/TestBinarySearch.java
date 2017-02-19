@@ -16,10 +16,8 @@ package com.hankcs.test.algorithm;
  *
  * @author hankcs
  */
-public class TestBinarySearch
-{
-    public static void main(String[] args)
-    {
+public class TestBinarySearch {
+    public static void main(String[] args) {
 //        TreeSet<Integer> setA = new TreeSet<>();
 //        setA.add(5);
 //        setA.add(16);

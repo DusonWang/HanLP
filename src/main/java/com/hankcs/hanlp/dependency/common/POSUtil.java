@@ -15,20 +15,17 @@ import com.hankcs.hanlp.corpus.tag.Nature;
 
 /**
  * 词性操作工具类
+ *
  * @author hankcs
  */
-public class POSUtil
-{
+public class POSUtil {
     /**
-     *
      * @param nature
      * @return
      */
-    public static String compilePOS(Nature nature)
-    {
+    public static String compilePOS(Nature nature) {
         String label = nature.toString();
-        switch (nature)
-        {
+        switch (nature) {
 
             case bg:
                 label = "b";

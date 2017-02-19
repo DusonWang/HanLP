@@ -18,81 +18,37 @@ import com.hankcs.hanlp.corpus.document.sentence.word.Word;
 import com.hankcs.hanlp.corpus.tag.Nature;
 import com.hankcs.hanlp.corpus.util.CorpusUtil;
 import com.hankcs.hanlp.corpus.util.Precompiler;
-import com.hankcs.hanlp.utility.TextUtility;
 import com.hankcs.hanlp.utility.Predefine;
+import com.hankcs.hanlp.utility.TextUtility;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
+
 import static com.hankcs.hanlp.utility.Predefine.logger;
 
 /**
  * @author hankcs
  */
-public class NatureDictionaryMaker extends CommonDictionaryMaker
-{
-    public NatureDictionaryMaker()
-    {
+public class NatureDictionaryMaker extends CommonDictionaryMaker {
+    private NatureDictionaryMaker() {
         super(null);
-    }
-
-    @Override
-    protected void addToDictionary(List<List<IWord>> sentenceList)
-    {
-        logger.info("开始制作词典");
-        // 制作NGram词典
-        for (List<IWord> wordList : sentenceList)
-        {
-            IWord pre = null;
-            for (IWord word : wordList)
-            {
-                // 制作词性词频词典
-                dictionaryMaker.add(word);
-                if (pre != null)
-                {
-                    nGramDictionaryMaker.addPair(pre, word);
-                }
-                pre = word;
-            }
-        }
-    }
-
-    @Override
-    protected void roleTag(List<List<IWord>> sentenceList)
-    {
-        logger.info("开始标注");
-        int i = 0;
-        for (List<IWord> wordList : sentenceList)
-        {
-            logger.info(++i + " / " + sentenceList.size());
-            for (IWord word : wordList)
-            {
-                Precompiler.compile(word);  // 编译为等效字符串
-            }
-            LinkedList<IWord> wordLinkedList = (LinkedList<IWord>) wordList;
-            wordLinkedList.addFirst(new Word(Predefine.TAG_BIGIN, Nature.begin.toString()));
-            wordLinkedList.addLast(new Word(Predefine.TAG_END, Nature.end.toString()));
-        }
     }
 
     /**
      * 指定语料库文件夹，制作一份词频词典
+     *
      * @return
      */
-    static boolean makeCoreDictionary(String inPath, String outPath)
-    {
+    static boolean makeCoreDictionary(String inPath, String outPath) {
         final DictionaryMaker dictionaryMaker = new DictionaryMaker();
-        final TreeSet<String> labelSet = new TreeSet<String>();
+        final TreeSet<String> labelSet = new TreeSet<>();
 
-        CorpusLoader.walk(inPath, new CorpusLoader.Handler()
-        {
+        CorpusLoader.walk(inPath, new CorpusLoader.Handler() {
             @Override
-            public void handle(Document document)
-            {
-                for (List<Word> sentence : document.getSimpleSentenceList(true))
-                {
-                    for (Word word : sentence)
-                    {
+            public void handle(Document document) {
+                for (List<Word> sentence : document.getSimpleSentenceList(true)) {
+                    for (Word word : sentence) {
                         if (shouldInclude(word))
                             dictionaryMaker.add(word);
                     }
@@ -109,25 +65,66 @@ public class NatureDictionaryMaker extends CommonDictionaryMaker
 
             /**
              * 是否应当计算这个词语
+             *
              * @param word
              * @return
              */
-            boolean shouldInclude(Word word)
-            {
-                if ("m".equals(word.label) || "mq".equals(word.label) || "w".equals(word.label) || "t".equals(word.label))
-                {
+            boolean shouldInclude(Word word) {
+                if ("m".equals(word.label) || "mq".equals(word.label) || "w".equals(word.label) || "t".equals(word.label)) {
                     if (!TextUtility.isAllChinese(word.value)) return false;
-                }
-                else if ("nr".equals(word.label))
-                {
+                } else if ("nr".equals(word.label)) {
                     return false;
                 }
 
                 return true;
             }
         });
-        if (outPath != null)
-        return dictionaryMaker.saveTxtTo(outPath);
-        return false;
+        return outPath != null && dictionaryMaker.saveTxtTo(outPath);
+    }
+
+    public static void main(String[] args) {
+//        makeCoreDictionary("D:\\JavaProjects\\CorpusToolBox\\data\\2014", "data/dictionary/CoreNatureDictionary.txt");
+//        EasyDictionary dictionary = EasyDictionary.create("data/dictionary/CoreNatureDictionary.txt");
+        final NatureDictionaryMaker dictionaryMaker = new NatureDictionaryMaker();
+        CorpusLoader.walk("D:\\JavaProjects\\CorpusToolBox\\data\\2014", new CorpusLoader.Handler() {
+            @Override
+            public void handle(Document document) {
+                dictionaryMaker.compute(CorpusUtil.convert2CompatibleList(document.getSimpleSentenceList(false))); // 再打一遍不拆分的
+                dictionaryMaker.compute(CorpusUtil.convert2CompatibleList(document.getSimpleSentenceList(true)));  // 先打一遍拆分的
+            }
+        });
+        dictionaryMaker.saveTxtTo("data/test/CoreNatureDictionary");
+    }
+
+    @Override
+    protected void addToDictionary(List<List<IWord>> sentenceList) {
+        logger.info("开始制作词典");
+        // 制作NGram词典
+        for (List<IWord> wordList : sentenceList) {
+            IWord pre = null;
+            for (IWord word : wordList) {
+                // 制作词性词频词典
+                dictionaryMaker.add(word);
+                if (pre != null) {
+                    nGramDictionaryMaker.addPair(pre, word);
+                }
+                pre = word;
+            }
+        }
+    }
+
+    @Override
+    protected void roleTag(List<List<IWord>> sentenceList) {
+        logger.info("开始标注");
+        int i = 0;
+        for (List<IWord> wordList : sentenceList) {
+            logger.info(++i + " / " + sentenceList.size());
+            for (IWord word : wordList) {
+                Precompiler.compile(word);  // 编译为等效字符串
+            }
+            LinkedList<IWord> wordLinkedList = (LinkedList<IWord>) wordList;
+            wordLinkedList.addFirst(new Word(Predefine.TAG_BIGIN, Nature.begin.toString()));
+            wordLinkedList.addLast(new Word(Predefine.TAG_END, Nature.end.toString()));
+        }
     }
 }

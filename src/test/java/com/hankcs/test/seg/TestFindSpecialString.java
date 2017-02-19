@@ -15,12 +15,11 @@ import com.hankcs.hanlp.dictionary.BiGramDictionary;
 
 /**
  * 查找二元词典中的特殊词串
+ *
  * @author hankcs
  */
-public class TestFindSpecialString
-{
-    public static void main(String[] args)
-    {
+public class TestFindSpecialString {
+    public static void main(String[] args) {
         System.out.println(BiGramDictionary._findSpecialString());
     }
 }

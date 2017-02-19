@@ -24,14 +24,12 @@ import java.util.Scanner;
 /**
  * @author hankcs
  */
-public class PlaySuggester extends TestCase
-{
-    public static void main(String[] args) throws Exception
-    {
+public class PlaySuggester extends TestCase {
+    public static void main(String[] args) throws Exception {
         testSuggest();
     }
-    public static void testSuggest() throws Exception
-    {
+
+    public static void testSuggest() throws Exception {
         ISuggester suggester = new Suggester();
 //        load("data/title.txt", suggester);
         load("data/phrase.txt", suggester);
@@ -52,26 +50,22 @@ public class PlaySuggester extends TestCase
                         "教育",
                         "生育",
                 };
-        for (String key : testCaseArray)
-        {
+        for (String key : testCaseArray) {
             runCase(suggester, key);
         }
         Scanner scanner = new Scanner(System.in);
         String line;
         while ((line = scanner.nextLine()).length() > 0
-                )
-        {
+                ) {
             runCase(suggester, line);
         }
     }
 
-    public static void load(String path, ISuggester iSuggester) throws IOException
-    {
+    public static void load(String path, ISuggester iSuggester) throws IOException {
         String line;
         {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
-            while ((line = br.readLine()) != null)
-            {
+            while ((line = br.readLine()) != null) {
                 line = line.trim();
                 line = line.split("\\s")[0];
                 if (line.length() <= 3 || line.length() > 20) continue;
@@ -82,8 +76,7 @@ public class PlaySuggester extends TestCase
         }
     }
 
-    public static void runCase(ISuggester ISuggester, String key)
-    {
+    public static void runCase(ISuggester ISuggester, String key) {
         long start = System.currentTimeMillis();
         System.out.println(key + " " + ISuggester.suggest(key, 10) + " " + (System.currentTimeMillis() - start) + "ms");
     }

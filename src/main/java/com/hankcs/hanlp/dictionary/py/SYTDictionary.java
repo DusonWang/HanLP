@@ -16,7 +16,10 @@ import com.hankcs.hanlp.collection.set.UnEmptyStringSet;
 import com.hankcs.hanlp.corpus.dictionary.StringDictionary;
 import com.hankcs.hanlp.corpus.io.IOUtil;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import static com.hankcs.hanlp.utility.Predefine.logger;
 
@@ -25,21 +28,17 @@ import static com.hankcs.hanlp.utility.Predefine.logger;
  *
  * @author hankcs
  */
-public class SYTDictionary
-{
-    static Set<String> smSet = new UnEmptyStringSet();
-    static Set<String> ymSet = new UnEmptyStringSet();
-    static Set<String> ydSet = new UnEmptyStringSet();
-    static Map<String, String[]> map = new TreeMap<String, String[]>();
+public class SYTDictionary {
+    private static Set<String> smSet = new UnEmptyStringSet();
+    private static Set<String> ymSet = new UnEmptyStringSet();
+    private static Set<String> ydSet = new UnEmptyStringSet();
+    private static Map<String, String[]> map = new TreeMap<>();
 
-    static
-    {
+    static {
         StringDictionary dictionary = new StringDictionary();
-        if (dictionary.load(HanLP.Config.SYTDictionaryPath))
-        {
+        if (dictionary.load(HanLP.Config.SYTDictionaryPath)) {
             logger.info("载入声母韵母音调词典" + HanLP.Config.SYTDictionaryPath + "成功");
-            for (Map.Entry<String, String> entry : dictionary.entrySet())
-            {
+            for (Map.Entry<String, String> entry : dictionary.entrySet()) {
                 //      0  1 2
                 // bai1=b,ai,1
                 String[] args = entry.getValue().split(",");
@@ -52,9 +51,7 @@ public class SYTDictionary
                 valueArray[3] = PinyinUtil.convertToneNumber2ToneMark(entry.getKey());
                 map.put(entry.getKey(), valueArray);
             }
-        }
-        else
-        {
+        } else {
             logger.warning("载入声母韵母音调词典" + HanLP.Config.SYTDictionaryPath + "失败");
         }
     }
@@ -64,33 +61,28 @@ public class SYTDictionary
      *
      * @param path
      */
-    public static void dumpEnum(String path)
-    {
+    public static void dumpEnum(String path) {
         dumpEnum(smSet, path + "sm.txt");
         dumpEnum(ymSet, path + "ym.txt");
         dumpEnum(ydSet, path + "yd.txt");
         Set<String> hdSet = new TreeSet<String>();
-        for (Pinyin pinyin : PinyinDictionary.pinyins)
-        {
+        for (Pinyin pinyin : PinyinDictionary.pinyins) {
             hdSet.add(pinyin.getHeadString());
         }
         dumpEnum(hdSet, path + "head.txt");
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, String[]> entry : map.entrySet())
-        {
+        for (Map.Entry<String, String[]> entry : map.entrySet()) {
             // 0声母 1韵母 2音调 3带音标
             String[] value = entry.getValue();
             Pinyin pinyin = Pinyin.valueOf(entry.getKey());
-            sb.append(entry.getKey() + "(" + Shengmu.class.getSimpleName() + "." + value[0] + ", " + Yunmu.class.getSimpleName() + "." + value[1] + ", " + value[2] + ", \"" + value[3] + "\", \"" + entry.getKey().substring(0, entry.getKey().length() - 1)  + "\"" + ", " + Head.class.getSimpleName() + "." + pinyin.getHeadString() + ", '" + pinyin.getFirstChar() + "'" + "),\n");
+            sb.append(entry.getKey()).append("(").append(Shengmu.class.getSimpleName()).append(".").append(value[0]).append(", ").append(Yunmu.class.getSimpleName()).append(".").append(value[1]).append(", ").append(value[2]).append(", \"").append(value[3]).append("\", \"").append(entry.getKey().substring(0, entry.getKey().length() - 1)).append("\"").append(", ").append(Head.class.getSimpleName()).append(".").append(pinyin.getHeadString()).append(", '").append(pinyin.getFirstChar()).append("'").append("),\n");
         }
         IOUtil.saveTxt(path + "py.txt", sb.toString());
     }
 
-    private static boolean dumpEnum(Set<String> set, String path)
-    {
+    private static boolean dumpEnum(Set<String> set, String path) {
         StringBuilder sb = new StringBuilder();
-        for (String s : set)
-        {
+        for (String s : set) {
             sb.append(s);
             sb.append(",\n");
         }

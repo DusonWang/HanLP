@@ -11,8 +11,8 @@
  */
 package com.hankcs.test.seg;
 
-import com.hankcs.hanlp.seg.common.Term;
 import com.hankcs.hanlp.seg.NShort.NShortSegment;
+import com.hankcs.hanlp.seg.common.Term;
 import junit.framework.TestCase;
 
 import java.util.List;
@@ -21,31 +21,25 @@ import java.util.Scanner;
 /**
  * @author hankcs
  */
-public class PlayGround extends TestCase
-{
-    public static void main(String[] args)
-    {
+public class PlayGround extends TestCase {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String line;
         while ((line = scanner.nextLine()).length() > 0
-                )
-        {
+                ) {
             seg(line);
         }
     }
 
-    private static void seg(String sentence)
-    {
+    private static void seg(String sentence) {
         List<Term> terms = NShortSegment.parse(sentence);
-        for (Term wr : terms)
-        {
+        for (Term wr : terms) {
             System.out.print(wr.word + wr.nature);
         }
         System.out.println();
     }
 
-    public void testCharSequence() throws Exception
-    {
+    public void testCharSequence() throws Exception {
         CharSequence s = "hello";
 
     }

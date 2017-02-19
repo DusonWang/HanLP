@@ -19,20 +19,18 @@ import java.util.List;
 
 /**
  * 机构名识别
+ *
  * @author hankcs
  */
-public class DemoOrganizationRecognition
-{
-    public static void main(String[] args)
-    {
+public class DemoOrganizationRecognition {
+    public static void main(String[] args) {
         String[] testCase = new String[]{
                 "我在上海林原科技有限公司兼职工作，",
                 "我经常在台川喜宴餐厅吃饭，",
                 "偶尔去开元地中海影城看电影。",
         };
         Segment segment = HanLP.newSegment().enableOrganizationRecognize(true);
-        for (String sentence : testCase)
-        {
+        for (String sentence : testCase) {
             List<Term> termList = segment.seg(sentence);
             System.out.println(termList);
         }

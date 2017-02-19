@@ -30,35 +30,27 @@ import static com.hankcs.hanlp.utility.Predefine.logger;
  *
  * @author hankcs
  */
-public class NRDictionary extends CommonDictionary<EnumItem<NR>>
-{
+public class NRDictionary extends CommonDictionary<EnumItem<NR>> {
     @Override
-    protected EnumItem<NR>[] onLoadValue(String path)
-    {
+    protected EnumItem<NR>[] onLoadValue(String path) {
         EnumItem<NR>[] valueArray = loadDat(path + ".value.dat");
-        if (valueArray != null)
-        {
+        if (valueArray != null) {
             return valueArray;
         }
-        List<EnumItem<NR>> valueList = new LinkedList<EnumItem<NR>>();
+        List<EnumItem<NR>> valueList = new LinkedList<>();
         String line = null;
-        try
-        {
+        try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
-            while ((line = br.readLine()) != null)
-            {
+            while ((line = br.readLine()) != null) {
                 Map.Entry<String, Map.Entry<String, Integer>[]> args = EnumItem.create(line);
-                EnumItem<NR> nrEnumItem = new EnumItem<NR>();
-                for (Map.Entry<String, Integer> e : args.getValue())
-                {
+                EnumItem<NR> nrEnumItem = new EnumItem<>();
+                for (Map.Entry<String, Integer> e : args.getValue()) {
                     nrEnumItem.labelMap.put(NR.valueOf(e.getKey()), e.getValue());
                 }
                 valueList.add(nrEnumItem);
             }
             br.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.severe("读取" + path + "失败[" + e + "]\n该词典这一行格式不对：" + line);
             return null;
         }
@@ -67,13 +59,11 @@ public class NRDictionary extends CommonDictionary<EnumItem<NR>>
     }
 
     @Override
-    protected boolean onSaveValue(EnumItem<NR>[] valueArray, String path)
-    {
+    protected boolean onSaveValue(EnumItem<NR>[] valueArray, String path) {
         return saveDat(path + ".value.dat", valueArray);
     }
 
-    private EnumItem<NR>[] loadDat(String path)
-    {
+    private EnumItem<NR>[] loadDat(String path) {
         byte[] bytes = IOUtil.readBytes(path);
         if (bytes == null) return null;
         NR[] nrArray = NR.values();
@@ -81,13 +71,11 @@ public class NRDictionary extends CommonDictionary<EnumItem<NR>>
         int size = ByteUtil.bytesHighFirstToInt(bytes, index);
         index += 4;
         EnumItem<NR>[] valueArray = new EnumItem[size];
-        for (int i = 0; i < size; ++i)
-        {
+        for (int i = 0; i < size; ++i) {
             int currentSize = ByteUtil.bytesHighFirstToInt(bytes, index);
             index += 4;
-            EnumItem<NR> item = new EnumItem<NR>();
-            for (int j = 0; j < currentSize; ++j)
-            {
+            EnumItem<NR> item = new EnumItem<>();
+            for (int j = 0; j < currentSize; ++j) {
                 NR nr = nrArray[ByteUtil.bytesHighFirstToInt(bytes, index)];
                 index += 4;
                 int frequency = ByteUtil.bytesHighFirstToInt(bytes, index);
@@ -99,25 +87,19 @@ public class NRDictionary extends CommonDictionary<EnumItem<NR>>
         return valueArray;
     }
 
-    private boolean saveDat(String path, EnumItem<NR>[] valueArray)
-    {
-        try
-        {
+    private boolean saveDat(String path, EnumItem<NR>[] valueArray) {
+        try {
             DataOutputStream out = new DataOutputStream(new FileOutputStream(path));
             out.writeInt(valueArray.length);
-            for (EnumItem<NR> item : valueArray)
-            {
+            for (EnumItem<NR> item : valueArray) {
                 out.writeInt(item.labelMap.size());
-                for (Map.Entry<NR, Integer> entry : item.labelMap.entrySet())
-                {
+                for (Map.Entry<NR, Integer> entry : item.labelMap.entrySet()) {
                     out.writeInt(entry.getKey().ordinal());
                     out.writeInt(entry.getValue());
                 }
             }
             out.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.warning("保存失败" + e);
             return false;
         }

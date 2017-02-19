@@ -17,22 +17,18 @@ import com.hankcs.hanlp.dictionary.CoreDictionary;
 import com.hankcs.hanlp.dictionary.CustomDictionary;
 import junit.framework.TestCase;
 
-import java.util.Map;
 import java.util.TreeMap;
 
 /**
  * @author hankcs
  */
-public class TestDAT extends TestCase
-{
-    public void testSaveWithLessDisk() throws Exception
-    {
+public class TestDAT extends TestCase {
+    public void testSaveWithLessDisk() throws Exception {
         // 希望在保存的时候尽量少用点硬盘
         System.out.println(BiGramDictionary.getBiFrequency("经济@建设"));
     }
 
-    public void testTransmit() throws Exception
-    {
+    public void testTransmit() throws Exception {
         DoubleArrayTrie<CoreDictionary.Attribute> dat = CustomDictionary.dat;
         int index = dat.transition("龙", 1);
         System.out.println(dat.output(index));
@@ -40,8 +36,7 @@ public class TestDAT extends TestCase
         System.out.println(dat.output(index));
     }
 
-    public void testCombine() throws Exception
-    {
+    public void testCombine() throws Exception {
         DoubleArrayTrie<CoreDictionary.Attribute> dat = CustomDictionary.dat;
         String[] wordNet = new String[]
                 {
@@ -54,32 +49,26 @@ public class TestDAT extends TestCase
                         "丁",
                         "呀",
                 };
-        for (int i = 0; i < wordNet.length; ++i)
-        {
+        for (int i = 0; i < wordNet.length; ++i) {
             int state = 1;
             state = dat.transition(wordNet[i], state);
-            if (state > 0)
-            {
+            if (state > 0) {
                 int start = i;
                 int to = i + 1;
-                int end = - 1;
+                int end = -1;
                 CoreDictionary.Attribute value = null;
-                for (; to < wordNet.length; ++to)
-                {
+                for (; to < wordNet.length; ++to) {
                     state = dat.transition(wordNet[to], state);
                     if (state < 0) break;
                     CoreDictionary.Attribute output = dat.output(state);
-                    if (output != null)
-                    {
+                    if (output != null) {
                         value = output;
                         end = to + 1;
                     }
                 }
-                if (value != null)
-                {
+                if (value != null) {
                     StringBuilder sbTerm = new StringBuilder();
-                    for (int j = start; j < end; ++j)
-                    {
+                    for (int j = start; j < end; ++j) {
                         sbTerm.append(wordNet[j]);
                     }
                     System.out.println(sbTerm.toString() + "/" + value);
@@ -89,16 +78,14 @@ public class TestDAT extends TestCase
         }
     }
 
-    public void testHandleEmptyString() throws Exception
-    {
+    public void testHandleEmptyString() throws Exception {
         String emptyString = "";
         DoubleArrayTrie<String> dat = new DoubleArrayTrie<String>();
         TreeMap<String, String> dictionary = new TreeMap<String, String>();
         dictionary.put("bug", "问题");
         dat.build(dictionary);
         DoubleArrayTrie<String>.Searcher searcher = dat.getSearcher(emptyString, 0);
-        while (searcher.next())
-        {
+        while (searcher.next()) {
         }
     }
 }

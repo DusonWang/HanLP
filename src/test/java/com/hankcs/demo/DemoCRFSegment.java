@@ -23,10 +23,8 @@ import java.util.List;
  *
  * @author hankcs
  */
-public class DemoCRFSegment
-{
-    public static void main(String[] args)
-    {
+public class DemoCRFSegment {
+    public static void main(String[] args) {
         HanLP.Config.ShowTermNature = false;    // 关闭词性显示
         Segment segment = new CRFSegment().enableCustomDictionary(false);
         String[] sentenceArray = new String[]
@@ -46,8 +44,7 @@ public class DemoCRFSegment
                         "国办发布网络提速降费十四条指导意见 鼓励流量不清零",
                         "乐视超级手机能否承载贾布斯的生态梦"
                 };
-        for (String sentence : sentenceArray)
-        {
+        for (String sentence : sentenceArray) {
             List<Term> termList = segment.seg(sentence);
             System.out.println(termList);
         }
@@ -56,8 +53,7 @@ public class DemoCRFSegment
          * 内存CookBook:
          * HanLP内部有智能的内存池，对于同一个CRF模型（模型文件路径作为id区分），只要它没被释放或者内存充足，就不会重新加载。
          */
-        for (int i = 0; i < 5; ++i)
-        {
+        for (int i = 0; i < 5; ++i) {
             segment = new CRFSegment();
         }
     }

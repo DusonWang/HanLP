@@ -17,10 +17,8 @@ import junit.framework.TestCase;
 /**
  * @author hankcs
  */
-public class TestUtil extends TestCase
-{
-    public void testNonZero() throws Exception
-    {
+public class TestUtil extends TestCase {
+    public void testNonZero() throws Exception {
         System.out.println(TextUtility.nonZero(0));
     }
 }

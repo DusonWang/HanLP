@@ -13,43 +13,30 @@ package com.hankcs.test.corpus;
 
 
 import com.hankcs.hanlp.HanLP;
-import com.hankcs.hanlp.corpus.dictionary.DictionaryMaker;
-import com.hankcs.hanlp.corpus.dictionary.EasyDictionary;
 import com.hankcs.hanlp.corpus.dictionary.TFDictionary;
-import com.hankcs.hanlp.corpus.dictionary.item.Item;
 import com.hankcs.hanlp.corpus.document.CorpusLoader;
 import com.hankcs.hanlp.corpus.document.Document;
 import com.hankcs.hanlp.corpus.document.sentence.word.CompoundWord;
 import com.hankcs.hanlp.corpus.document.sentence.word.IWord;
 import com.hankcs.hanlp.corpus.io.FolderWalker;
 import com.hankcs.hanlp.corpus.io.IOUtil;
-import com.hankcs.hanlp.corpus.occurrence.TermFrequency;
 import com.hankcs.hanlp.dictionary.CoreDictionary;
 import junit.framework.TestCase;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 部分标注有问题，比如逗号缺少标注等等，尝试修复它
+ *
  * @author hankcs
  */
-public class AdjustCorpus extends TestCase
-{
-    public void testAdjust() throws Exception
-    {
-        List<File> fileList = FolderWalker.open("D:\\JavaProjects\\CorpusToolBox\\data\\2014\\");
-        for (File file : fileList)
-        {
-            handle(file);
-        }
-    }
-
-    private static void handle(File file)
-    {
-        try
-        {
+public class AdjustCorpus extends TestCase {
+    private static void handle(File file) {
+        try {
             String text = IOUtil.readTxt(file.getPath());
             int length = text.length();
             text = addW(text, "：");
@@ -71,40 +58,37 @@ public class AdjustCorpus extends TestCase
             text = addW(text, "、");
             text = addW(text, "《");
             text = addW(text, "》");
-            if (text.length() != length)
-            {
+            if (text.length() != length) {
                 BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
                 bw.write(text);
                 bw.close();
                 System.out.println("修正了" + file);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static String addW(String text, String c)
-    {
+    private static String addW(String text, String c) {
         text = text.replaceAll("\\" + c + "/w ", c);
         return text.replaceAll("\\" + c, c + "/w ");
     }
 
-    public void testPlay() throws Exception
-    {
+    public void testAdjust() throws Exception {
+        List<File> fileList = FolderWalker.open("D:\\JavaProjects\\CorpusToolBox\\data\\2014\\");
+        for (File file : fileList) {
+            handle(file);
+        }
+    }
+
+    public void testPlay() throws Exception {
         final TFDictionary tfDictionary = new TFDictionary();
-        CorpusLoader.walk("D:\\JavaProjects\\CorpusToolBox\\data\\2014", new CorpusLoader.Handler()
-        {
+        CorpusLoader.walk("D:\\JavaProjects\\CorpusToolBox\\data\\2014", new CorpusLoader.Handler() {
             @Override
-            public void handle(Document document)
-            {
-                for (List<IWord> wordList : document.getComplexSentenceList())
-                {
-                    for (IWord word : wordList)
-                    {
-                        if (word instanceof CompoundWord && word.getLabel().equals("ns"))
-                        {
+            public void handle(Document document) {
+                for (List<IWord> wordList : document.getComplexSentenceList()) {
+                    for (IWord word : wordList) {
+                        if (word instanceof CompoundWord && word.getLabel().equals("ns")) {
                             tfDictionary.add(word.toString());
                         }
                     }
@@ -114,12 +98,10 @@ public class AdjustCorpus extends TestCase
         tfDictionary.saveTxtTo("data/test/complex_ns.txt");
     }
 
-    public void testAdjustNGram() throws Exception
-    {
+    public void testAdjustNGram() throws Exception {
         IOUtil.LineIterator iterator = new IOUtil.LineIterator(HanLP.Config.BiGramDictionaryPath);
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(HanLP.Config.BiGramDictionaryPath + "adjust.txt"), "UTF-8"));
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             String line = iterator.next();
             String[] params = line.split(" ");
             String first = params[0].split("@", 2)[0];
@@ -128,8 +110,7 @@ public class AdjustCorpus extends TestCase
 //                System.err.println(line);
             int biFrequency = Integer.parseInt(params[1]);
             CoreDictionary.Attribute attribute = CoreDictionary.get(first + second);
-            if (attribute != null && (first.length() == 1 || second.length() == 1))
-            {
+            if (attribute != null && (first.length() == 1 || second.length() == 1)) {
                 System.out.println(line);
                 continue;
             }

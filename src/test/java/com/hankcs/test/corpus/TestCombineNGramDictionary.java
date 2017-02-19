@@ -17,12 +17,11 @@ import junit.framework.TestCase;
 
 /**
  * 测试合并多个NGram词典
+ *
  * @author hankcs
  */
-public class TestCombineNGramDictionary extends TestCase
-{
-    public void testCombine() throws Exception
-    {
+public class TestCombineNGramDictionary extends TestCase {
+    public void testCombine() throws Exception {
         System.out.println(TFDictionary.combine(HanLP.Config.BiGramDictionaryPath, "XXXDictionary.ngram.txt"));
     }
 }

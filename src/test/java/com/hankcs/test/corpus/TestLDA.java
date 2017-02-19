@@ -23,24 +23,17 @@ import java.util.List;
 /**
  * @author hankcs
  */
-public class TestLDA extends TestCase
-{
-    public void testSegmentCorpus() throws Exception
-    {
+public class TestLDA extends TestCase {
+    public void testSegmentCorpus() throws Exception {
         File root = new File("D:\\Doc\\语料库\\搜狗文本分类语料库精简版");
-        for (File folder : root.listFiles())
-        {
-            if (folder.isDirectory())
-            {
-                for (File file : folder.listFiles())
-                {
+        for (File folder : root.listFiles()) {
+            if (folder.isDirectory()) {
+                for (File file : folder.listFiles()) {
                     System.out.println(file.getAbsolutePath());
                     List<Term> termList = HanLP.segment(IOUtil.readTxt(file.getAbsolutePath()));
                     StringBuilder sbOut = new StringBuilder();
-                    for (Term term : termList)
-                    {
-                        if (CoreStopWordDictionary.shouldInclude(term))
-                        {
+                    for (Term term : termList) {
+                        if (CoreStopWordDictionary.shouldInclude(term)) {
                             sbOut.append(term.word).append(" ");
                         }
                     }

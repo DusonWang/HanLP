@@ -18,15 +18,13 @@ import java.util.List;
 
 /**
  * 索引分词
+ *
  * @author hankcs
  */
-public class DemoIndexSegment
-{
-    public static void main(String[] args)
-    {
+public class DemoIndexSegment {
+    public static void main(String[] args) {
         List<Term> termList = IndexTokenizer.segment("主副食品");
-        for (Term term : termList)
-        {
+        for (Term term : termList) {
             System.out.println(term + " [" + term.offset + ":" + (term.offset + term.word.length()) + "]");
         }
     }

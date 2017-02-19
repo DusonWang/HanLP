@@ -18,10 +18,8 @@ import junit.framework.TestCase;
 /**
  * @author hankcs
  */
-public class TestTRMDictionary extends TestCase
-{
-    public void testLoad() throws Exception
-    {
+public class TestTRMDictionary extends TestCase {
+    public void testLoad() throws Exception {
         TransformMatrixDictionary<NR> nrTransformMatrixDictionary = new TransformMatrixDictionary<NR>(NR.class);
         nrTransformMatrixDictionary.load("data/dictionary/person/nr.tr.txt");
         System.out.println(nrTransformMatrixDictionary.getFrequency(NR.A, NR.A));

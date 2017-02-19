@@ -16,10 +16,8 @@ import com.hankcs.hanlp.dictionary.nr.PersonDictionary;
 /**
  * @author hankcs
  */
-public class TestPersonDictionary
-{
-    public static void main(String[] args)
-    {
+public class TestPersonDictionary {
+    public static void main(String[] args) {
         System.out.println(PersonDictionary.dictionary.get("稽"));
     }
 }

@@ -18,25 +18,24 @@ import com.hankcs.hanlp.seg.common.Term;
 
 /**
  * 节点
+ *
  * @author hankcs
  */
-public class Node
-{
+public class Node {
     public final static Node NULL = new Node(new Term(CoNLLWord.NULL.NAME, Nature.n), -1);
-    static
-    {
+
+    static {
         NULL.label = "null";
     }
+
     public String word;
     public String compiledWord;
     public String label;
     public int id;
 
-    public Node(Term term, int id)
-    {
+    public Node(Term term, int id) {
         this.id = id;
-        switch (term.nature)
-        {
+        switch (term.nature) {
 
             case bg:
                 label = "b";
@@ -193,8 +192,7 @@ public class Node
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return word + "/" + label;
     }
 }

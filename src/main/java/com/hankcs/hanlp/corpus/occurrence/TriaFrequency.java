@@ -16,17 +16,14 @@ package com.hankcs.hanlp.corpus.occurrence;
  *
  * @author hankcs
  */
-public class TriaFrequency extends PairFrequency
-{
-    public String third;
+public class TriaFrequency extends PairFrequency {
+    private String third;
 
-    private TriaFrequency(String term, Integer frequency)
-    {
+    private TriaFrequency(String term, Integer frequency) {
         super(term, frequency);
     }
 
-    private TriaFrequency(String term)
-    {
+    private TriaFrequency(String term) {
         super(term);
     }
 
@@ -39,8 +36,7 @@ public class TriaFrequency extends PairFrequency
      * @param delimiter 一般使用RIGHT！
      * @return
      */
-    public static TriaFrequency create(String first, char delimiter, String second, String third)
-    {
+    public static TriaFrequency create(String first, char delimiter, String second, String third) {
         TriaFrequency triaFrequency = new TriaFrequency(first + delimiter + second + Occurrence.RIGHT + third);
         triaFrequency.first = first;
         triaFrequency.second = second;
@@ -51,14 +47,14 @@ public class TriaFrequency extends PairFrequency
 
     /**
      * 构造一个三阶接续，逆向
+     *
      * @param second
      * @param third
      * @param delimiter 一般使用LEFT
      * @param first
      * @return
      */
-    public static TriaFrequency create(String second, String third, char delimiter, String first)
-    {
+    public static TriaFrequency create(String second, String third, char delimiter, String first) {
         TriaFrequency triaFrequency = new TriaFrequency(second + Occurrence.RIGHT + third + delimiter + first);
         triaFrequency.first = first;
         triaFrequency.second = second;
@@ -68,20 +64,17 @@ public class TriaFrequency extends PairFrequency
     }
 
     @Override
-    public String toString()
-    {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(getKey().replace(Occurrence.LEFT, '←').replace(Occurrence.RIGHT, '→'));
-        sb.append('=');
-        sb.append(" tf=");
-        sb.append(getValue());
-        sb.append(' ');
-        sb.append("mi=");
-        sb.append(mi);
-        sb.append(" le=");
-        sb.append(le);
-        sb.append(" re=");
-        sb.append(re);
-        return sb.toString();
+    public String toString() {
+        return getKey().replace(Occurrence.LEFT, '←').replace(Occurrence.RIGHT, '→') +
+                '=' +
+                " tf=" +
+                getValue() +
+                ' ' +
+                "mi=" +
+                mi +
+                " le=" +
+                le +
+                " re=" +
+                re;
     }
 }

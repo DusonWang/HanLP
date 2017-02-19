@@ -12,8 +12,8 @@
 package com.hankcs.hanlp.corpus.dictionary;
 
 import com.hankcs.hanlp.collection.trie.DoubleArrayTrie;
-import com.hankcs.hanlp.dictionary.BaseSearcher;
 import com.hankcs.hanlp.corpus.tag.Nature;
+import com.hankcs.hanlp.dictionary.BaseSearcher;
 
 import java.io.*;
 import java.util.*;
@@ -26,43 +26,34 @@ import static com.hankcs.hanlp.utility.Predefine.logger;
  *
  * @author hankcs
  */
-public class EasyDictionary
-{
-    DoubleArrayTrie<Attribute> trie = new DoubleArrayTrie<Attribute>();
+public class EasyDictionary {
+    private DoubleArrayTrie<Attribute> trie = new DoubleArrayTrie<>();
 
-    public static EasyDictionary create(String path)
-    {
+    public static EasyDictionary create(String path) {
         EasyDictionary dictionary = new EasyDictionary();
-        if (dictionary.load(path))
-        {
+        if (dictionary.load(path)) {
             return dictionary;
-        }
-        else
-        {
+        } else {
             logger.warning("从" + path + "读取失败");
         }
 
         return null;
     }
 
-    private boolean load(String path)
-    {
+    private boolean load(String path) {
         logger.info("通用词典开始加载:" + path);
         List<String> wordList = new ArrayList<String>();
         List<Attribute> attributeList = new ArrayList<Attribute>();
         BufferedReader br = null;
-        try
-        {
+        try {
             br = new BufferedReader(new InputStreamReader(IOAdapter == null ? new FileInputStream(path) : IOAdapter.open(path), "UTF-8"));
             String line;
-            while ((line = br.readLine()) != null)
-            {
+            while ((line = br.readLine()) != null) {
                 String param[] = line.split(" ");
                 wordList.add(param[0]);
                 int natureCount = (param.length - 1) / 2;
                 Attribute attribute = new Attribute(natureCount);
-                for (int i = 0; i < natureCount; ++i)
-                {
+                for (int i = 0; i < natureCount; ++i) {
                     attribute.nature[i] = Enum.valueOf(Nature.class, param[1 + 2 * i]);
                     attribute.frequency[i] = Integer.parseInt(param[2 + 2 * i]);
                     attribute.totalFrequency += attribute.frequency[i];
@@ -71,89 +62,35 @@ public class EasyDictionary
             }
             logger.info("通用词典读入词条" + wordList.size() + " 属性" + attributeList.size());
             br.close();
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             logger.severe("通用词典" + path + "不存在！" + e);
             return false;
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             logger.severe("通用词典" + path + "读取错误！" + e);
             return false;
         }
 
         logger.info("通用词典DAT构建结果:" + trie.build(wordList, attributeList));
-        logger.info("通用词典加载成功:" + trie.size() +"个词条" );
+        logger.info("通用词典加载成功:" + trie.size() + "个词条");
         return true;
     }
 
-    public Attribute GetWordInfo(String key)
-    {
+    public Attribute GetWordInfo(String key) {
         return trie.get(key);
     }
 
-    public boolean contains(String key)
-    {
+    public boolean contains(String key) {
         return GetWordInfo(key) != null;
     }
 
-    public BaseSearcher getSearcher(String text)
-    {
+    public BaseSearcher getSearcher(String text) {
         return new Searcher(text);
-    }
-
-    public class Searcher extends BaseSearcher<Attribute>
-    {
-        /**
-         * 分词从何处开始，这是一个状态
-         */
-        int begin;
-
-        private List<Map.Entry<String, Attribute>> entryList;
-
-        protected Searcher(char[] c)
-        {
-            super(c);
-        }
-
-        protected Searcher(String text)
-        {
-            super(text);
-            entryList = new LinkedList<Map.Entry<String, Attribute>>();
-        }
-
-        @Override
-        public Map.Entry<String, Attribute> next()
-        {
-            // 保证首次调用找到一个词语
-            while (entryList.size() == 0 && begin < c.length)
-            {
-                entryList = trie.commonPrefixSearchWithValue(c, begin);
-                ++begin;
-            }
-            // 之后调用仅在缓存用完的时候调用一次
-            if (entryList.size() == 0 && begin < c.length)
-            {
-                entryList = trie.commonPrefixSearchWithValue(c, begin);
-                ++begin;
-            }
-            if (entryList.size() == 0)
-            {
-                return null;
-            }
-            Map.Entry<String, Attribute> result = entryList.get(0);
-            entryList.remove(0);
-            offset = begin - 1;
-            return result;
-        }
     }
 
     /**
      * 通用词典中的词属性
      */
-    static public class Attribute
-    {
+    static public class Attribute {
         /**
          * 词性列表
          */
@@ -165,20 +102,17 @@ public class EasyDictionary
 
         public int totalFrequency;
 
-        public Attribute(int size)
-        {
+        public Attribute(int size) {
             nature = new Nature[size];
             frequency = new int[size];
         }
 
-        public Attribute(Nature[] nature, int[] frequency)
-        {
+        public Attribute(Nature[] nature, int[] frequency) {
             this.nature = nature;
             this.frequency = frequency;
         }
 
-        public Attribute(Nature nature, int frequency)
-        {
+        public Attribute(Nature nature, int frequency) {
             this(1);
             this.nature[0] = nature;
             this.frequency[0] = frequency;
@@ -190,8 +124,7 @@ public class EasyDictionary
          *
          * @param nature
          */
-        public Attribute(Nature nature)
-        {
+        public Attribute(Nature nature) {
             this(nature, 1000);
         }
 
@@ -202,15 +135,11 @@ public class EasyDictionary
          * @return 词频
          * @deprecated 推荐使用Nature参数！
          */
-        public int getNatureFrequency(String nature)
-        {
-            try
-            {
+        public int getNatureFrequency(String nature) {
+            try {
                 Nature pos = Enum.valueOf(Nature.class, nature);
                 return getNatureFrequency(pos);
-            }
-            catch (IllegalArgumentException e)
-            {
+            } catch (IllegalArgumentException e) {
                 return 0;
             }
         }
@@ -221,14 +150,11 @@ public class EasyDictionary
          * @param nature 词性
          * @return 词频
          */
-        public int getNatureFrequency(final Nature nature)
-        {
+        int getNatureFrequency(final Nature nature) {
             int result = 0;
             int i = 0;
-            for (Nature pos : this.nature)
-            {
-                if (nature == pos)
-                {
+            for (Nature pos : this.nature) {
+                if (nature == pos) {
                     return frequency[i];
                 }
                 ++i;
@@ -237,12 +163,50 @@ public class EasyDictionary
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return "Attribute{" +
                     "nature=" + Arrays.toString(nature) +
                     ", frequency=" + Arrays.toString(frequency) +
                     '}';
+        }
+    }
+
+    public class Searcher extends BaseSearcher<Attribute> {
+        /**
+         * 分词从何处开始，这是一个状态
+         */
+        int begin;
+
+        private List<Map.Entry<String, Attribute>> entryList;
+
+        protected Searcher(char[] c) {
+            super(c);
+        }
+
+        protected Searcher(String text) {
+            super(text);
+            entryList = new LinkedList<>();
+        }
+
+        @Override
+        public Map.Entry<String, Attribute> next() {
+            // 保证首次调用找到一个词语
+            while (entryList.size() == 0 && begin < c.length) {
+                entryList = trie.commonPrefixSearchWithValue(c, begin);
+                ++begin;
+            }
+            // 之后调用仅在缓存用完的时候调用一次
+            if (entryList.size() == 0 && begin < c.length) {
+                entryList = trie.commonPrefixSearchWithValue(c, begin);
+                ++begin;
+            }
+            if (entryList.size() == 0) {
+                return null;
+            }
+            Map.Entry<String, Attribute> result = entryList.get(0);
+            entryList.remove(0);
+            offset = begin - 1;
+            return result;
         }
     }
 }

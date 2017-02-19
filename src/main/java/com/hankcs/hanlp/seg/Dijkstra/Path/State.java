@@ -11,13 +11,10 @@
  */
 package com.hankcs.hanlp.seg.Dijkstra.Path;
 
-import com.hankcs.hanlp.seg.common.Vertex;
-
 /**
  * @author hankcs
  */
-public class State implements Comparable<State>
-{
+public class State implements Comparable<State> {
     /**
      * 路径花费
      */
@@ -27,15 +24,13 @@ public class State implements Comparable<State>
      */
     public int vertex;
 
-    @Override
-    public int compareTo(State o)
-    {
-        return Double.compare(cost, o.cost);
-    }
-
-    public State(double cost, int vertex)
-    {
+    public State(double cost, int vertex) {
         this.cost = cost;
         this.vertex = vertex;
+    }
+
+    @Override
+    public int compareTo(State o) {
+        return Double.compare(cost, o.cost);
     }
 }

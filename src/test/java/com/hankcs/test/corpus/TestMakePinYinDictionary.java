@@ -25,10 +25,8 @@ import java.util.*;
 /**
  * @author hankcs
  */
-public class TestMakePinYinDictionary extends TestCase
-{
-    public void testCombine() throws Exception
-    {
+public class TestMakePinYinDictionary extends TestCase {
+    public void testCombine() throws Exception {
         HanLP.Config.enableDebug();
         StringDictionary dictionaryPY = new StringDictionary();
         dictionaryPY.load("D:\\JavaProjects\\jpinyin\\data\\pinyinTable.standard.txt");
@@ -54,25 +52,21 @@ public class TestMakePinYinDictionary extends TestCase
         main.save("data/dictionary/pinyin/pinyin.txt");
     }
 
-    public void testCombineSingle() throws Exception
-    {
+    public void testCombineSingle() throws Exception {
         HanLP.Config.enableDebug();
         StringDictionary main = StringDictionaryMaker.combine("data/dictionary/pinyin/pinyin.txt", "data/dictionary/pinyin/single.txt");
         main.save("data/dictionary/pinyin/pinyin.txt");
     }
 
-    public void testSpeed() throws Exception
-    {
+    public void testSpeed() throws Exception {
 
     }
 
 
-    public void testMakeSingle() throws Exception
-    {
+    public void testMakeSingle() throws Exception {
         LinkedList<String[]> csv = IOUtil.readCsv("D:\\JavaProjects\\jpinyin\\data\\words.csv");
         StringDictionary dictionarySingle = new StringDictionary();
-        for (String[] args : csv)
-        {
+        for (String[] args : csv) {
             //  0    1  2     3  4  5   6      7
             // 6895,中,zhong,zh,ong,1,\u4E2D,中 zhong \u4E2D
             String word = args[1];
@@ -88,12 +82,10 @@ public class TestMakePinYinDictionary extends TestCase
         dictionarySingle.save("data/dictionary/pinyin/single.txt");
     }
 
-    public void testMakeTable() throws Exception
-    {
+    public void testMakeTable() throws Exception {
         LinkedList<String[]> csv = IOUtil.readCsv("D:\\JavaProjects\\jpinyin\\data\\words.csv");
         StringDictionary dictionarySingle = new StringDictionary();
-        for (String[] args : csv)
-        {
+        for (String[] args : csv) {
             //  0    1  2     3  4  5   6      7
             // 6895,中,zhong,zh,ong,1,\u4E2D,中 zhong \u4E2D
             String word = args[1];
@@ -109,78 +101,66 @@ public class TestMakePinYinDictionary extends TestCase
         dictionarySingle.save("data/dictionary/pinyin/sm-ym-table.txt");
     }
 
-    public void testConvert() throws Exception
-    {
+    public void testConvert() throws Exception {
         String text = "重载不是重担，" + HanLP.convertToTraditionalChinese("以后爱皇后");
         List<Pinyin> pinyinList = PinyinDictionary.convertToPinyin(text);
         System.out.print("原文,");
-        for (char c : text.toCharArray())
-        {
+        for (char c : text.toCharArray()) {
             System.out.printf("%c,", c);
         }
         System.out.println();
 
         System.out.print("拼音（数字音调）,");
-        for (Pinyin pinyin : pinyinList)
-        {
+        for (Pinyin pinyin : pinyinList) {
             System.out.printf("%s,", pinyin);
         }
         System.out.println();
 
         System.out.print("拼音（符号音调）,");
-        for (Pinyin pinyin : pinyinList)
-        {
+        for (Pinyin pinyin : pinyinList) {
             System.out.printf("%s,", pinyin.getPinyinWithToneMark());
         }
         System.out.println();
 
         System.out.print("拼音（无音调）,");
-        for (Pinyin pinyin : pinyinList)
-        {
+        for (Pinyin pinyin : pinyinList) {
             System.out.printf("%s,", pinyin.getPinyinWithoutTone());
         }
         System.out.println();
 
         System.out.print("声调,");
-        for (Pinyin pinyin : pinyinList)
-        {
+        for (Pinyin pinyin : pinyinList) {
             System.out.printf("%s,", pinyin.getTone());
         }
         System.out.println();
 
         System.out.print("声母,");
-        for (Pinyin pinyin : pinyinList)
-        {
+        for (Pinyin pinyin : pinyinList) {
             System.out.printf("%s,", pinyin.getShengmu());
         }
         System.out.println();
 
         System.out.print("韵母,");
-        for (Pinyin pinyin : pinyinList)
-        {
+        for (Pinyin pinyin : pinyinList) {
             System.out.printf("%s,", pinyin.getYunmu());
         }
         System.out.println();
 
         System.out.print("输入法头,");
-        for (Pinyin pinyin : pinyinList)
-        {
+        for (Pinyin pinyin : pinyinList) {
             System.out.printf("%s,", pinyin.getHeadString());
         }
         System.out.println();
     }
 
-    public void testMakePinyinEnum() throws Exception
-    {
+    public void testMakePinyinEnum() throws Exception {
         StringDictionary dictionary = new StringDictionary();
         dictionary.load("data/dictionary/pinyin/pinyin.txt");
 
         StringDictionary pyEnumDictionary = new StringDictionary();
-        for (Map.Entry<String, String> entry : dictionary.entrySet())
-        {
+        for (Map.Entry<String, String> entry : dictionary.entrySet()) {
             String[] args = entry.getValue().split(",");
-            for (String arg : args)
-            {
+            for (String arg : args) {
                 pyEnumDictionary.add(arg, arg);
             }
         }
@@ -189,8 +169,7 @@ public class TestMakePinYinDictionary extends TestCase
         table.combine(pyEnumDictionary);
 
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, String> entry : table.entrySet())
-        {
+        for (Map.Entry<String, String> entry : table.entrySet()) {
             sb.append(entry.getKey());
             sb.append('\n');
         }
@@ -199,19 +178,17 @@ public class TestMakePinYinDictionary extends TestCase
 
     /**
      * 有些拼音没有声母和韵母，尝试根据上文拓展它们
+     *
      * @throws Exception
      */
-    public void testExtendTable() throws Exception
-    {
+    public void testExtendTable() throws Exception {
         StringDictionary dictionary = new StringDictionary();
         dictionary.load("data/dictionary/pinyin/pinyin.txt");
 
         StringDictionary pyEnumDictionary = new StringDictionary();
-        for (Map.Entry<String, String> entry : dictionary.entrySet())
-        {
+        for (Map.Entry<String, String> entry : dictionary.entrySet()) {
             String[] args = entry.getValue().split(",");
-            for (String arg : args)
-            {
+            for (String arg : args) {
                 pyEnumDictionary.add(arg, arg);
             }
         }
@@ -224,20 +201,15 @@ public class TestMakePinYinDictionary extends TestCase
         Map.Entry<String, String> pre = iterator.next();
         String prePy = pre.getKey().substring(0, pre.getKey().length() - 1);
         String preYd = pre.getKey().substring(pre.getKey().length() - 1);
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             Map.Entry<String, String> current = iterator.next();
             String currentPy = current.getKey().substring(0, current.getKey().length() - 1);
             String currentYd = current.getKey().substring(current.getKey().length() - 1);
             // handle it
-            if (!current.getValue().contains(","))
-            {
-                if (currentPy.equals(prePy))
-                {
+            if (!current.getValue().contains(",")) {
+                if (currentPy.equals(prePy)) {
                     table.add(current.getKey(), pre.getValue().replace(preYd, currentYd));
-                }
-                else
-                {
+                } else {
                     System.out.println(currentPy + currentYd);
                 }
             }
@@ -249,33 +221,27 @@ public class TestMakePinYinDictionary extends TestCase
         table.save("data/dictionary/pinyin/sm-ym-yd-table.txt");
     }
 
-    public void testDumpSMT() throws Exception
-    {
+    public void testDumpSMT() throws Exception {
         HanLP.Config.enableDebug();
         SYTDictionary.dumpEnum("data/dictionary/pinyin/");
     }
 
-    public void testPinyinDictionary() throws Exception
-    {
+    public void testPinyinDictionary() throws Exception {
         HanLP.Config.enableDebug();
         Pinyin[] pinyins = PinyinDictionary.get("中");
         System.out.println(Arrays.toString(pinyins));
     }
 
-    public void testCombineAnsjWithPinyinTxt() throws Exception
-    {
+    public void testCombineAnsjWithPinyinTxt() throws Exception {
         StringDictionary dictionaryAnsj = new StringDictionary();
         dictionaryAnsj.load("D:\\JavaProjects\\jpinyin\\data\\ansj.txt");
-        System.out.println(dictionaryAnsj.remove(new SimpleDictionary.Filter<String>()
-        {
+        System.out.println(dictionaryAnsj.remove(new SimpleDictionary.Filter<String>() {
             @Override
-            public boolean remove(Map.Entry<String, String> entry)
-            {
+            public boolean remove(Map.Entry<String, String> entry) {
                 String word = entry.getKey();
                 String pinyin = entry.getValue();
                 String[] pinyinStringArray = entry.getValue().split("[,\\s　]");
-                if (word.length() != pinyinStringArray.length || !TonePinyinString2PinyinConverter.valid(pinyinStringArray))
-                {
+                if (word.length() != pinyinStringArray.length || !TonePinyinString2PinyinConverter.valid(pinyinStringArray)) {
                     System.out.println(entry);
                     return false;
                 }
@@ -286,38 +252,32 @@ public class TestMakePinYinDictionary extends TestCase
 
     }
 
-    public void testMakePinyinJavaCode() throws Exception
-    {
+    public void testMakePinyinJavaCode() throws Exception {
         StringBuilder sb = new StringBuilder();
-        for (Pinyin pinyin : PinyinDictionary.pinyins)
-        {
+        for (Pinyin pinyin : PinyinDictionary.pinyins) {
             // 0声母 1韵母 2音调 3带音标
             sb.append(pinyin + "(" + Shengmu.class.getSimpleName() + "." + pinyin.getShengmu() + ", " + Yunmu.class.getSimpleName() + "." + pinyin.getYunmu() + ", " + pinyin.getTone() + ", \"" + pinyin.getPinyinWithToneMark() + "\", \"" + pinyin.getPinyinWithoutTone() + "\"" + ", " + Head.class.getSimpleName() + "." + pinyin.getHeadString() + ", '" + pinyin.getFirstChar() + "'" + "),\n");
         }
         IOUtil.saveTxt("data/dictionary/pinyin/py.txt", sb.toString());
     }
 
-    public void testConvertUnicodeTable() throws Exception
-    {
+    public void testConvertUnicodeTable() throws Exception {
         StringDictionary dictionary = new StringDictionary("=");
-        for (String line : IOUtil.readLineList("D:\\Doc\\语料库\\Uni2Pinyin.txt"))
-        {
+        for (String line : IOUtil.readLineList("D:\\Doc\\语料库\\Uni2Pinyin.txt")) {
             if (line.startsWith("#")) continue;
             String[] argArray = line.split("\\s");
             if (argArray.length == 1) continue;
             String py = argArray[1];
-            for (int i = 2; i < argArray.length; ++i)
-            {
+            for (int i = 2; i < argArray.length; ++i) {
                 py += ',';
                 py += argArray[i];
             }
-            dictionary.add(String.valueOf((char)(Integer.parseInt(argArray[0], 16))), py);
+            dictionary.add(String.valueOf((char) (Integer.parseInt(argArray[0], 16))), py);
         }
         dictionary.save("D:\\Doc\\语料库\\Hanzi2Pinyin.txt");
     }
 
-    public void testCombineUnicodeTableWithMainDictionary() throws Exception
-    {
+    public void testCombineUnicodeTableWithMainDictionary() throws Exception {
         StringDictionary mainDictionary = new StringDictionary("=");
         mainDictionary.load("data/dictionary/pinyin/pinyin.txt");
         StringDictionary subDictionary = new StringDictionary("=");

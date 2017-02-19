@@ -18,15 +18,12 @@ import junit.framework.TestCase;
 /**
  * @author hankcs
  */
-public class TestDictionaryLoadSpeed extends TestCase
-{
-    public void testCoreDictionary() throws Exception
-    {
+public class TestDictionaryLoadSpeed extends TestCase {
+    public void testCoreDictionary() throws Exception {
         System.out.println(CoreDictionary.get("速度"));
     }
 
-    public void testBiGramDictionary() throws Exception
-    {
+    public void testBiGramDictionary() throws Exception {
         System.out.println(BiGramDictionary.getBiFrequency("加快", "速度"));
     }
 }

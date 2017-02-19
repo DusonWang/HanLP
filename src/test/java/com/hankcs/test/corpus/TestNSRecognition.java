@@ -18,10 +18,8 @@ import junit.framework.TestCase;
 /**
  * @author hankcs
  */
-public class TestNSRecognition extends TestCase
-{
-    public void testSeg() throws Exception
-    {
+public class TestNSRecognition extends TestCase {
+    public void testSeg() throws Exception {
         HanLP.Config.enableDebug();
         DijkstraSegment segment = new DijkstraSegment();
         segment.enableJapaneseNameRecognize(false);

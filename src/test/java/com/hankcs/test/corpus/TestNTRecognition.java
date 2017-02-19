@@ -22,10 +22,8 @@ import java.util.Set;
 /**
  * @author hankcs
  */
-public class TestNTRecognition extends TestCase
-{
-    public void testSeg() throws Exception
-    {
+public class TestNTRecognition extends TestCase {
+    public void testSeg() throws Exception {
         HanLP.Config.enableDebug();
         DijkstraSegment segment = new DijkstraSegment();
         segment.enableCustomDictionary(false);
@@ -34,8 +32,7 @@ public class TestNTRecognition extends TestCase
         System.out.println(segment.seg("清河工业园区"));
     }
 
-    public void testGeneratePatternJavaCode() throws Exception
-    {
+    public void testGeneratePatternJavaCode() throws Exception {
         CommonStringDictionary commonStringDictionary = new CommonStringDictionary();
         commonStringDictionary.load("data/dictionary/organization/nt.pattern.txt");
         StringBuilder sb = new StringBuilder();
@@ -43,8 +40,7 @@ public class TestNTRecognition extends TestCase
         CommonStringDictionary secondDictionary = new CommonStringDictionary();
         secondDictionary.load("data/dictionary/organization/outerNT.pattern.txt");
         keySet.addAll(secondDictionary.keySet());
-        for (String pattern : keySet)
-        {
+        for (String pattern : keySet) {
             sb.append("trie.addKeyword(\"" + pattern + "\");\n");
         }
         IOUtil.saveTxt("data/dictionary/organization/code.txt", sb.toString());

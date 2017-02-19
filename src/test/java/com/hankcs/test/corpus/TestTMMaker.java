@@ -16,12 +16,11 @@ import junit.framework.TestCase;
 
 /**
  * 测试转移矩阵制作工具
+ *
  * @author hankcs
  */
-public class TestTMMaker extends TestCase
-{
-    public void testCreate() throws Exception
-    {
+public class TestTMMaker extends TestCase {
+    public void testCreate() throws Exception {
         TMDictionaryMaker tmDictionaryMaker = new TMDictionaryMaker();
         tmDictionaryMaker.addPair("ab", "cd");
         tmDictionaryMaker.addPair("ab", "cd");

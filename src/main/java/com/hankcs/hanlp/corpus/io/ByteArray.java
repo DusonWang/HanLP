@@ -20,13 +20,11 @@ import static com.hankcs.hanlp.utility.Predefine.logger;
  *
  * @author hankcs
  */
-public class ByteArray
-{
+public class ByteArray {
     byte[] bytes;
     int offset;
 
-    public ByteArray(byte[] bytes)
-    {
+    public ByteArray(byte[] bytes) {
         this.bytes = bytes;
     }
 
@@ -36,8 +34,7 @@ public class ByteArray
      * @param path
      * @return
      */
-    public static ByteArray createByteArray(String path)
-    {
+    public static ByteArray createByteArray(String path) {
         byte[] bytes = IOUtil.readBytes(path);
         if (bytes == null) return null;
         return new ByteArray(bytes);
@@ -45,10 +42,10 @@ public class ByteArray
 
     /**
      * 获取全部字节
+     *
      * @return
      */
-    public byte[] getBytes()
-    {
+    public byte[] getBytes() {
         return bytes;
     }
 
@@ -57,15 +54,13 @@ public class ByteArray
      *
      * @return
      */
-    public int nextInt()
-    {
+    public int nextInt() {
         int result = ByteUtil.bytesHighFirstToInt(bytes, offset);
         offset += 4;
         return result;
     }
 
-    public double nextDouble()
-    {
+    public double nextDouble() {
         double result = ByteUtil.bytesHighFirstToDouble(bytes, offset);
         offset += 8;
         return result;
@@ -76,8 +71,7 @@ public class ByteArray
      *
      * @return
      */
-    public char nextChar()
-    {
+    public char nextChar() {
         char result = ByteUtil.bytesHighFirstToChar(bytes, offset);
         offset += 2;
         return result;
@@ -88,13 +82,11 @@ public class ByteArray
      *
      * @return
      */
-    public byte nextByte()
-    {
+    public byte nextByte() {
         return bytes[offset++];
     }
 
-    public boolean hasMore()
-    {
+    public boolean hasMore() {
         return offset < bytes.length;
     }
 
@@ -103,18 +95,15 @@ public class ByteArray
      *
      * @return
      */
-    public String nextString()
-    {
+    public String nextString() {
         char[] buffer = new char[nextInt()];
-        for (int i = 0; i < buffer.length; ++i)
-        {
+        for (int i = 0; i < buffer.length; ++i) {
             buffer[i] = nextChar();
         }
         return new String(buffer);
     }
 
-    public float nextFloat()
-    {
+    public float nextFloat() {
         float result = ByteUtil.bytesHighFirstToFloat(bytes, offset);
         offset += 4;
         return result;
@@ -122,10 +111,10 @@ public class ByteArray
 
     /**
      * 读取一个无符号短整型
+     *
      * @return
      */
-    public int nextUnsignedShort()
-    {
+    public int nextUnsignedShort() {
         byte a = nextByte();
         byte b = nextByte();
         return (((a & 0xff) << 8) | (b & 0xff));
@@ -133,10 +122,10 @@ public class ByteArray
 
     /**
      * 读取一个UTF字符串
+     *
      * @return
      */
-    public String nextUTF()
-    {
+    public String nextUTF() {
         int utflen = nextUnsignedShort();
         byte[] bytearr = null;
         char[] chararr = null;
@@ -147,24 +136,20 @@ public class ByteArray
         int count = 0;
         int chararr_count = 0;
 
-        for (int i = 0; i < utflen; ++i)
-        {
+        for (int i = 0; i < utflen; ++i) {
             bytearr[i] = nextByte();
         }
 
-        while (count < utflen)
-        {
+        while (count < utflen) {
             c = (int) bytearr[count] & 0xff;
             if (c > 127) break;
             count++;
             chararr[chararr_count++] = (char) c;
         }
 
-        while (count < utflen)
-        {
+        while (count < utflen) {
             c = (int) bytearr[count] & 0xff;
-            switch (c >> 4)
-            {
+            switch (c >> 4) {
                 case 0:
                 case 1:
                 case 2:
@@ -204,7 +189,7 @@ public class ByteArray
                                 "malformed input around byte " + (count - 1));
                     chararr[chararr_count++] = (char) (((c & 0x0F) << 12) |
                             ((char2 & 0x3F) << 6) |
-                            ((char3 & 0x3F) << 0));
+                            ((char3 & 0x3F)));
                     break;
                 default:
                     /* 10xx xxxx,  1111 xxxx */
@@ -216,21 +201,18 @@ public class ByteArray
         return new String(chararr, 0, chararr_count);
     }
 
-    public int getOffset()
-    {
+    public int getOffset() {
         return offset;
     }
 
-    public int getLength()
-    {
+    public int getLength() {
         return bytes.length;
     }
 
     /**
      * 通知执行关闭/销毁操作
      */
-    public void close()
-    {
+    public void close() {
         bytes = null;
     }
 }

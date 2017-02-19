@@ -3,25 +3,22 @@ package com.hankcs.hanlp.algoritm.ahocorasick.trie;
 /**
  * 配置
  */
-public class TrieConfig
-{
+class TrieConfig {
+    /**
+     * 只保留最长匹配
+     */
+    boolean remainLongest = false;
     /**
      * 允许重叠
      */
     private boolean allowOverlaps = true;
 
     /**
-     * 只保留最长匹配
-     */
-    public boolean remainLongest = false;
-
-    /**
      * 是否允许重叠
      *
      * @return
      */
-    public boolean isAllowOverlaps()
-    {
+    boolean isAllowOverlaps() {
         return allowOverlaps;
     }
 
@@ -30,8 +27,7 @@ public class TrieConfig
      *
      * @param allowOverlaps
      */
-    public void setAllowOverlaps(boolean allowOverlaps)
-    {
+    void setAllowOverlaps(boolean allowOverlaps) {
         this.allowOverlaps = allowOverlaps;
     }
 }

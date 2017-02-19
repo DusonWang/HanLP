@@ -20,15 +20,12 @@ import junit.framework.TestCase;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author hankcs
  */
-public class TestBiGramDictionary extends TestCase
-{
-    public void testBiGramDictionary()
-    {
+public class TestBiGramDictionary extends TestCase {
+    public void testBiGramDictionary() {
         assertEquals(15, BiGramDictionary.getBiFrequency("团结", "奋斗"));
         assertEquals(1, BiGramDictionary.getBiFrequency("团结", "拼搏"));
 //        BufferedReader br = null;
@@ -60,24 +57,22 @@ public class TestBiGramDictionary extends TestCase
         BiGramDictionary.getBiFrequency("团结@奋斗");
     }
 
-    public void testTable() throws Exception
-    {
+    public void testTable() throws Exception {
         assertEquals(106, CoreBiGramTableDictionary.getBiFrequency("延续", "未##时"));
     }
 
     /**
      * 测试两者兼容性，顺便将二元词典中多出来的词语记录下来，可以回写到核心词典中
+     *
      * @throws Exception
      */
-    public void testFastBiGram() throws Exception
-    {
+    public void testFastBiGram() throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(HanLP.Config.BiGramDictionaryPath)));
         String line;
         DictionaryMaker dictionaryMaker = new DictionaryMaker();
         double total = 0;
         double right = 0;
-        while ((line = br.readLine()) != null)
-        {
+        while ((line = br.readLine()) != null) {
             ++total;
             String[] params = line.split("\\s");
             String[] twoWord = params[0].split("@", 2);
@@ -86,20 +81,15 @@ public class TestBiGramDictionary extends TestCase
             int idA = CoreBiGramTableDictionary.getWordID(a);
             int idB = CoreBiGramTableDictionary.getWordID(b);
 //            assert BiGramDictionary.getBiFrequency(a, b) == CoreBiGramDictionary.getBiFrequency(a, b) : line;
-            if (BiGramDictionary.getBiFrequency(a, b) != CoreBiGramTableDictionary.getBiFrequency(idA, idB))
-            {
+            if (BiGramDictionary.getBiFrequency(a, b) != CoreBiGramTableDictionary.getBiFrequency(idA, idB)) {
                 System.out.println(line);
-                if (idA < 0)
-                {
+                if (idA < 0) {
                     dictionaryMaker.add(a, "n");
                 }
-                if (idB < 0)
-                {
+                if (idB < 0) {
                     dictionaryMaker.add(b, "n");
                 }
-            }
-            else
-            {
+            } else {
                 ++right;
             }
         }
@@ -108,36 +98,30 @@ public class TestBiGramDictionary extends TestCase
         dictionaryMaker.saveTxtTo("data/test/out.txt");
     }
 
-    public void testSingle() throws Exception
-    {
+    public void testSingle() throws Exception {
         HanLP.Config.enableDebug();
         System.out.println(CoreBiGramTableDictionary.getBiFrequency("团结", "奋斗"));
     }
 
-    public void testBenchmark() throws Exception
-    {
+    public void testBenchmark() throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(HanLP.Config.BiGramDictionaryPath)));
         String line;
         List<String[]> twoWordList = new LinkedList<String[]>();
-        while ((line = br.readLine()) != null)
-        {
+        while ((line = br.readLine()) != null) {
             String[] params = line.split("\\s");
             String[] twoWord = params[0].split("@", 2);
             twoWordList.add(twoWord);
         }
         br.close();
         long start = System.currentTimeMillis();
-        for (String[] twoWord : twoWordList)
-        {
+        for (String[] twoWord : twoWordList) {
         }
     }
 
-    public void testObjectOutPut() throws Exception
-    {
+    public void testObjectOutPut() throws Exception {
         int size = 5563418;
         int[] array = new int[size];
-        for (int i = 0; i < array.length; i++)
-        {
+        for (int i = 0; i < array.length; i++) {
             array[i] = i;
         }
         ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("data/test/out.bin"));
@@ -148,8 +132,7 @@ public class TestBiGramDictionary extends TestCase
         ObjectInputStream in = new ObjectInputStream(new FileInputStream("data/test/out.bin"));
         int[] inArray = (int[]) in.readObject();
         System.out.println(System.currentTimeMillis() - start);
-        for (int i = 0; i < inArray.length; i++)
-        {
+        for (int i = 0; i < inArray.length; i++) {
             assertEquals(i, inArray[i]);
         }
     }

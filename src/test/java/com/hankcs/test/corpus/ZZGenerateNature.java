@@ -17,10 +17,8 @@ import junit.framework.TestCase;
 /**
  * @author hankcs
  */
-public class ZZGenerateNature extends TestCase
-{
-    public void testGenerate() throws Exception
-    {
+public class ZZGenerateNature extends TestCase {
+    public void testGenerate() throws Exception {
         String text = "n 名词\n" +
                 "nr 人名\n" +
                 "nrj 日语人名\n" +
@@ -150,8 +148,7 @@ public class ZZGenerateNature extends TestCase
                 "\n";
         String[] params = text.split("\\n");
         int i = 0;
-        for (String p : params)
-        {
+        for (String p : params) {
             p = p.trim();
             if (p.length() == 0) continue;
             System.out.print(++i + " ");
@@ -164,8 +161,7 @@ public class ZZGenerateNature extends TestCase
         }
     }
 
-    public void testSize() throws Exception
-    {
-            System.out.println(Nature.values().length);
+    public void testSize() throws Exception {
+        System.out.println(Nature.values().length);
     }
 }

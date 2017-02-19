@@ -22,49 +22,46 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * 测试从静安语料库提取短语
+ *
  * @author hankcs
  */
-public class TestPhrase extends TestCase
-{
+public class TestPhrase extends TestCase {
     static final String FOLDER = "D:\\Doc\\语料库\\上海静安\\";
-    public void testExtract() throws Exception
-    {
+
+    public void testExtract() throws Exception {
         List<File> fileList = FolderWalker.open(FOLDER);
         Map<String, String> phraseMap = new TreeMap<String, String>();
         int i = 0;
-        for (File file : fileList)
-        {
+        for (File file : fileList) {
             System.out.print(++i + " / " + fileList.size() + " " + file.getName() + " ");
             String path = file.getAbsolutePath();
             List<String> phraseList = MutualInformationEntropyPhraseExtractor.extract(IOUtil.readTxt(path), 3);
             System.out.print(phraseList);
-            for (String phrase : phraseList)
-            {
+            for (String phrase : phraseList) {
                 phraseMap.put(phrase, file.getAbsolutePath());
             }
             System.out.println();
         }
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("data/phrase.txt")));
-        for (Map.Entry<String, String> entry : phraseMap.entrySet())
-        {
+        for (Map.Entry<String, String> entry : phraseMap.entrySet()) {
             bw.write(entry.getKey() + "\t" + entry.getValue());
             bw.newLine();
         }
         bw.close();
     }
 
-    public void testSingle() throws Exception
-    {
+    public void testSingle() throws Exception {
         HanLP.Config.enableDebug();
         System.out.println(MutualInformationEntropyPhraseExtractor.extract(IOUtil.readTxt("D:\\Doc\\语料库\\上海静安\\静安区全市首推“情诗表白”结婚颁证.txt"), 3));
     }
 
-    public void testSeg() throws Exception
-    {
+    public void testSeg() throws Exception {
         System.out.println(StandardTokenizer.segment(IOUtil.readTxt(FOLDER + "南西社区暑期学生活动简讯  2010年第1期.txt")));
     }
 }

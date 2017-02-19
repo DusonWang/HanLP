@@ -12,25 +12,26 @@
 package com.hankcs.test.corpus;
 
 import com.hankcs.hanlp.HanLP;
-import com.hankcs.hanlp.corpus.dictionary.StringDictionary;
 import com.hankcs.hanlp.corpus.io.IOUtil;
 import com.hankcs.hanlp.dictionary.other.CharTable;
 import junit.framework.TestCase;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * @author hankcs
  */
-public class TestJianFanDictionaryMaker extends TestCase
-{
+public class TestJianFanDictionaryMaker extends TestCase {
 
     private String cc = "/Users/hankcs/CppProjects/OpenCC/data/dictionary/";
     private String root = "data/dictionary/tc/";
 
-    public void testCombine() throws Exception
-    {
+    public void testCombine() throws Exception {
 //        StringDictionary dictionaryHanLP = new StringDictionary("=");
 //        dictionaryHanLP.load(HanLP.Config.t2sDictionaryPath);
 //
@@ -49,19 +50,16 @@ public class TestJianFanDictionaryMaker extends TestCase
 //        dictionaryHanLP.save(HanLP.Config.t2sDictionaryPath);
     }
 
-    public void testConvertSingle() throws Exception
-    {
+    public void testConvertSingle() throws Exception {
         System.out.println(HanLP.convertToTraditionalChinese("一个劲"));
     }
 
-    public void testIssue() throws Exception
-    {
+    public void testIssue() throws Exception {
         System.out.println(HanLP.convertToSimplifiedChinese("缐"));
         System.out.println(CharTable.convert("缐"));
     }
 
-    public void testImportOpenCC() throws Exception
-    {
+    public void testImportOpenCC() throws Exception {
         // 转换OpenCC的词库
         Map<String, String> s2t = new TreeMap<String, String>();
         combine("\t", s2t, cc + "STCharacters.txt",
@@ -76,18 +74,16 @@ public class TestJianFanDictionaryMaker extends TestCase
         save(t2s, "data/dictionary/tc/t2s.txt");
     }
 
-    public void testMakeHK() throws Exception
-    {
+    public void testMakeHK() throws Exception {
         Map<String, String> t2hk = new TreeMap<String, String>();
         combine("\t", t2hk,
                 cc + "HKVariantsPhrases.txt",
                 cc + "HKVariants.txt"
-                );
+        );
         save(t2hk, "data/dictionary/tc/t2hk.txt");
     }
 
-    public void testMakeTW() throws Exception
-    {
+    public void testMakeTW() throws Exception {
         Map<String, String> t2tw = new TreeMap<String, String>();
         combine("\t", t2tw,
                 cc + "TWPhrasesIT.txt",
@@ -98,15 +94,12 @@ public class TestJianFanDictionaryMaker extends TestCase
         save(t2tw, "data/dictionary/tc/t2tw.txt");
     }
 
-    private void save(Map<String, String> storage, String path) throws IOException
-    {
+    private void save(Map<String, String> storage, String path) throws IOException {
         BufferedWriter bw = IOUtil.newBufferedWriter(path);
-        for (Map.Entry<String, String> entry : storage.entrySet())
-        {
+        for (Map.Entry<String, String> entry : storage.entrySet()) {
             String line = entry.toString();
             int firstBlank = line.indexOf(' ');
-            if (firstBlank != -1)
-            {
+            if (firstBlank != -1) {
                 line = line.substring(0, firstBlank);
             }
             bw.write(line);
@@ -115,39 +108,30 @@ public class TestJianFanDictionaryMaker extends TestCase
         bw.close();
     }
 
-    private Map<String, Set<String>> combine(Map<String, String> s2t, Map<String, String> t2s)
-    {
+    private Map<String, Set<String>> combine(Map<String, String> s2t, Map<String, String> t2s) {
         Map<String, Set<String>> all = new TreeMap<String, Set<String>>();
-        for (Map.Entry<String, String> entry : s2t.entrySet())
-        {
+        for (Map.Entry<String, String> entry : s2t.entrySet()) {
             String key = entry.getKey();
             Set<String> value = all.get(key);
-            if (value == null)
-            {
+            if (value == null) {
                 value = new TreeSet<String>();
                 all.put(key, value);
             }
-            for (String v : entry.getValue().split(" "))
-            {
-                if (key.length() == 1 && key.equals(v))
-                {
+            for (String v : entry.getValue().split(" ")) {
+                if (key.length() == 1 && key.equals(v)) {
                     continue;
                 }
                 value.add(v);
             }
         }
 
-        for (Map.Entry<String, String> entry : t2s.entrySet())
-        {
-            for (String key : entry.getValue().split(" "))
-            {
-                if (key.length() == 1 && key.equals(entry.getKey()))
-                {
+        for (Map.Entry<String, String> entry : t2s.entrySet()) {
+            for (String key : entry.getValue().split(" ")) {
+                if (key.length() == 1 && key.equals(entry.getKey())) {
                     continue;
                 }
                 Set<String> value = all.get(key);
-                if (value == null)
-                {
+                if (value == null) {
                     value = new TreeSet<String>();
                     all.put(key, value);
                 }
@@ -159,17 +143,13 @@ public class TestJianFanDictionaryMaker extends TestCase
         return all;
     }
 
-    private Map<String, String> combine(String delimiter, Map<String, String> storage, String... pathArray)
-    {
-        for (String path : pathArray)
-        {
+    private Map<String, String> combine(String delimiter, Map<String, String> storage, String... pathArray) {
+        for (String path : pathArray) {
             IOUtil.LineIterator lineIterator = new IOUtil.LineIterator(path);
-            while (lineIterator.hasNext())
-            {
+            while (lineIterator.hasNext()) {
                 String line = lineIterator.next();
                 String[] args = line.split(delimiter);
-                if (args.length != 2)
-                {
+                if (args.length != 2) {
                     System.err.println(line);
                     System.exit(-1);
                 }
@@ -180,8 +160,7 @@ public class TestJianFanDictionaryMaker extends TestCase
         return storage;
     }
 
-    public void testChar() throws Exception
-    {
+    public void testChar() throws Exception {
         String line = "㐹\t㑶 㐹";
         System.out.println('㐹' == '㐹');
     }

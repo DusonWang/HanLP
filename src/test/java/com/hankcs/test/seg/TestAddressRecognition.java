@@ -17,10 +17,8 @@ import junit.framework.TestCase;
 /**
  * @author hankcs
  */
-public class TestAddressRecognition extends TestCase
-{
-    public static void main(String[] args)
-    {
+public class TestAddressRecognition extends TestCase {
+    public static void main(String[] args) {
         System.out.println(NShortSegment.parse("地址：乌鲁木齐南路218、228"));
     }
 }

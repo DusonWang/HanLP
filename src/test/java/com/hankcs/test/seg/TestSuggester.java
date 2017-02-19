@@ -11,8 +11,8 @@
  */
 package com.hankcs.test.seg;
 
-import com.hankcs.hanlp.seg.common.Term;
 import com.hankcs.hanlp.seg.NShort.NShortSegment;
+import com.hankcs.hanlp.seg.common.Term;
 import com.hankcs.hanlp.suggest.ISuggester;
 import com.hankcs.hanlp.suggest.Suggester;
 import com.hankcs.hanlp.utility.TextUtility;
@@ -23,10 +23,8 @@ import java.util.List;
 /**
  * @author hankcs
  */
-public class TestSuggester extends TestCase
-{
-    public void testSuggest() throws Exception
-    {
+public class TestSuggester extends TestCase {
+    public void testSuggest() throws Exception {
         ISuggester ISuggester = new Suggester();
         ISuggester.addSentence("房子价格");
         ISuggester.addSentence("苹果价格");
@@ -44,31 +42,26 @@ public class TestSuggester extends TestCase
                         "水果价钱",
                         "护照",
                 };
-        for (String key : testCaseArray)
-        {
+        for (String key : testCaseArray) {
             runCase(ISuggester, key);
         }
     }
 
-    public void runCase(ISuggester ISuggester, String key)
-    {
+    public void runCase(ISuggester ISuggester, String key) {
         long start = System.currentTimeMillis();
         System.out.println(key + " " + ISuggester.suggest(key, 10) + " " + (System.currentTimeMillis() - start) + "ms");
     }
 
-    public void testLong2Char() throws Exception
-    {
+    public void testLong2Char() throws Exception {
         long l = Long.MAX_VALUE - 1234567890L;
         System.out.println(Long.toBinaryString(l));
         char[] charArray = TextUtility.long2char(l);
-        for (char c : charArray)
-        {
-            System.out.print(Long.toBinaryString((long)(c)));
+        for (char c : charArray) {
+            System.out.print(Long.toBinaryString((long) (c)));
         }
     }
 
-    public void testBadCase() throws Exception
-    {
+    public void testBadCase() throws Exception {
         ISuggester ISuggester = new Suggester();
         ISuggester.addSentence("教师资格条例");
         ISuggester.addSentence("换二代身份证");
@@ -76,8 +69,7 @@ public class TestSuggester extends TestCase
         System.out.println(ISuggester.suggest("教室资格", 10));
     }
 
-    public void testSentence() throws Exception
-    {
+    public void testSentence() throws Exception {
         String key = "二";
         String[] array = new String[]
                 {

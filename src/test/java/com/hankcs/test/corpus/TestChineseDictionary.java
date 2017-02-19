@@ -19,22 +19,18 @@ import junit.framework.TestCase;
 /**
  * @author hankcs
  */
-public class TestChineseDictionary extends TestCase
-{
-    public void testF2J() throws Exception
-    {
+public class TestChineseDictionary extends TestCase {
+    public void testF2J() throws Exception {
         HanLP.Config.enableDebug(true);
         System.out.println(TraditionalChineseDictionary.convertToSimplifiedChinese("士多啤梨是紅色的"));
     }
 
-    public void testJ2F() throws Exception
-    {
+    public void testJ2F() throws Exception {
         HanLP.Config.enableDebug(true);
         System.out.println(SimplifiedChineseDictionary.convertToTraditionalChinese("草莓是红色的"));
     }
 
-    public void testInterface() throws Exception
-    {
+    public void testInterface() throws Exception {
         HanLP.Config.enableDebug();
         System.out.println(HanLP.convertToSimplifiedChinese("「以後等妳當上皇后，就能買士多啤梨慶祝了」"));
         System.out.println(HanLP.convertToTraditionalChinese("“以后等你当上皇后，就能买草莓庆祝了”"));

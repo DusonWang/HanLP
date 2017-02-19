@@ -11,9 +11,7 @@
  */
 package com.hankcs.test.model;
 
-import com.hankcs.hanlp.corpus.dependency.model.WordNatureWeightModelMaker;
 import com.hankcs.hanlp.corpus.io.ByteArray;
-import com.hankcs.hanlp.model.bigram.WordNatureDependencyModel;
 import com.hankcs.hanlp.model.maxent.MaxEntModel;
 import com.hankcs.hanlp.utility.Predefine;
 import junit.framework.TestCase;
@@ -21,11 +19,10 @@ import junit.framework.TestCase;
 /**
  * @author hankcs
  */
-public class TestWordNatureModel extends TestCase
-{
+public class TestWordNatureModel extends TestCase {
     String PATH = "data/model/dependency/test.txt";
-    public void testLoad() throws Exception
-    {
+
+    public void testLoad() throws Exception {
 //        System.out.println(WordNatureDependencyModel.get("鼓励@" + WordNatureWeightModelMaker.wrapTag("v")));
 //        System.out.println(WordNatureDependencyModel.get("鼓励@也是"));
 //        System.out.println(WordNatureDependencyModel.get("鼓励@##核心##"));
@@ -33,8 +30,7 @@ public class TestWordNatureModel extends TestCase
 //        System.out.println(WordNatureDependencyModel.get("方略@" + WordNatureWeightModelMaker.wrapTag("vshi")));
     }
 
-    public void testMaxEntModel() throws Exception
-    {
+    public void testMaxEntModel() throws Exception {
         MaxEntModel model = MaxEntModel.create(PATH);
         model = MaxEntModel.create(ByteArray.createByteArray(PATH + Predefine.BIN_EXT));
         String[] contexts = new String[]{"Rainy", "Sad"};

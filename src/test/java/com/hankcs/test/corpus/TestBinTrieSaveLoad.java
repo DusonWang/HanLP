@@ -23,13 +23,11 @@ import java.util.Set;
 /**
  * @author hankcs
  */
-public class TestBinTrieSaveLoad extends TestCase
-{
+public class TestBinTrieSaveLoad extends TestCase {
 
     public static final String OUT_BINTRIE_DAT = "data/bintrie.dat";
 
-    public void testSaveAndLoad() throws Exception
-    {
+    public void testSaveAndLoad() throws Exception {
         BinTrie<Integer> trie = new BinTrie<Integer>();
         trie.put("haha", 0);
         trie.put("hankcs", 1);
@@ -40,8 +38,7 @@ public class TestBinTrieSaveLoad extends TestCase
         System.out.println(trie.save(OUT_BINTRIE_DAT));
         trie = new BinTrie<Integer>();
         Integer[] value = new Integer[100];
-        for (int i = 0; i < value.length; ++i)
-        {
+        for (int i = 0; i < value.length; ++i) {
             value[i] = i;
         }
         System.out.println(trie.load(OUT_BINTRIE_DAT, value));
@@ -49,14 +46,12 @@ public class TestBinTrieSaveLoad extends TestCase
         System.out.println(entrySet);
     }
 
-    public void testCustomDictionary() throws Exception
-    {
+    public void testCustomDictionary() throws Exception {
         HanLP.Config.enableDebug(true);
         System.out.println(CustomDictionary.get("龟兔赛跑"));
     }
 
-    public void testSortCustomDictionary() throws Exception
-    {
+    public void testSortCustomDictionary() throws Exception {
         DictionaryUtil.sortDictionary(HanLP.Config.CustomDictionaryPath[0]);
     }
 }

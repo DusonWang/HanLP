@@ -19,19 +19,18 @@ import java.lang.reflect.Modifier;
 
 /**
  * 修改final static域的反射工具
+ *
  * @author hankcs
  */
-public class ReflectionHelper
-{
+class ReflectionHelper {
     private static final String MODIFIERS_FIELD = "modifiers";
 
     private static final ReflectionFactory reflection =
             ReflectionFactory.getReflectionFactory();
 
-    public static void setStaticFinalField(
+    static void setStaticFinalField(
             Field field, Object value)
-            throws NoSuchFieldException, IllegalAccessException
-    {
+            throws NoSuchFieldException, IllegalAccessException {
         // 获得 public 权限
         field.setAccessible(true);
         // 将modifiers域设为非final,这样就可以修改了

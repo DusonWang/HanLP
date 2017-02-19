@@ -26,12 +26,10 @@ import java.util.List;
  *
  * @author hankcs
  */
-public class MDAGUnsimplifyTest extends TestCase
-{
+public class MDAGUnsimplifyTest extends TestCase {
     private static final String DATA_TEST_OUT_BIN = "data/test/out.bin";
 
-    public void testSimplify() throws Exception
-    {
+    public void testSimplify() throws Exception {
         MDAG mdag = new MDAG();
         mdag.addString("hers");
         mdag.addString("his");
@@ -45,8 +43,7 @@ public class MDAGUnsimplifyTest extends TestCase
         System.out.println(mdag.contains("his"));
     }
 
-    public void testSimplifyWithoutSave() throws Exception
-    {
+    public void testSimplifyWithoutSave() throws Exception {
         MDAG mdag = new MDAG();
         mdag.addString("hers");
         mdag.addString("his");
@@ -57,16 +54,14 @@ public class MDAGUnsimplifyTest extends TestCase
         System.out.println(mdag.contains("hers"));
     }
 
-    public void testSimplifyMap() throws Exception
-    {
+    public void testSimplifyMap() throws Exception {
         MDAGMap<String> mdagMap = new MDAGMap<String>();
         List<String> validKeySet = new ArrayList<String>();
         validKeySet.add("hers");
         validKeySet.add("his");
         validKeySet.add("she");
         validKeySet.add("he");
-        for (String key : validKeySet)
-        {
+        for (String key : validKeySet) {
             mdagMap.put(key, key);
         }
         mdagMap.simplify();
