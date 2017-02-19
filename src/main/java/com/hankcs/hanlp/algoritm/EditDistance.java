@@ -19,8 +19,6 @@ import java.util.List;
  * 基于语义距离的编辑距离实现
  * @author hankcs
  *
- * and nGram distance compute
- * @author duson
  *
  */
 public class EditDistance {
@@ -112,8 +110,10 @@ public class EditDistance {
 
     /*
     * default nGram=2
-    *
+    * add nGram distance compute
+    * @author duson
     * the nGram distance is better than Levenshtein's distance
+    *
     * */
     public static float getNGRAMDistance(String source, String target) {
         if (source == null || target == null || "".equals(source) || "".equals(target))
